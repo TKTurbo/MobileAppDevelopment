@@ -1,64 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app_development/screens/accountscreen.dart';
+import 'package:mobile_app_development/screens/mapscreen.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
-      title: 'Named Routes Demo',
-      // Start the app with the "/" named route. In this case, the app starts
-      // on the FirstScreen widget.
-      initialRoute: '/',
-      routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => const FirstScreen(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        '/second': (context) => const SecondScreen(),
-      },
-    ),
-  );
-}
+import 'screens/homescreen.dart';
+import 'screens/loginscreen.dart';
 
-class FirstScreen extends StatelessWidget {
-  const FirstScreen({super.key});
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  final bool isLoggedIn = true; // Determine if the user is logged in
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('First Screen'),
+    return MaterialApp(
+      title: 'Bottom Navigation Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
-      body: Center(
-        child: ElevatedButton(
-          // Within the `FirstScreen` widget
-          onPressed: () {
-            // Navigate to the second screen using a named route.
-            Navigator.pushNamed(context, '/second');
-          },
-          child: const Text('Launch screen'),
-        ),
-      ),
+      home: isLoggedIn ? LoggedInContext() : LoginScreen(),
     );
   }
 }
 
-class SecondScreen extends StatelessWidget {
-  const SecondScreen({super.key});
+class LoggedInContext extends StatefulWidget {
+  @override
+  _LoggedInState createState() => _LoggedInState();
+}
+
+class _LoggedInState extends State<LoggedInContext> {
+  int _currentIndex = 0;
+
+  final List<Widget> _tabs = [
+    HomeScreen(),
+    MapScreen(),
+    AccountScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Second Screen'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          // Within the SecondScreen widget
-          onPressed: () {
-            // Navigate back to the first screen by popping the current route
-            // off the stack.
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
-        ),
+      body: _tabs[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Kaart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Account',
+          ),
+        ],
       ),
     );
   }
