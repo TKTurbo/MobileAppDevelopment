@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,7 +8,7 @@ class LoginScreen extends StatelessWidget {
         title: Text('BlueWheels'),
       ),
       body: Center(
-        child: Text('Please log in to continue.'),
+        child: Text('Please register account'),
       ),
     );
   }
