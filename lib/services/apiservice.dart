@@ -8,24 +8,14 @@ class ApiService {
 
   final String baseUrl = 'https://mad.thomaskreder.nl';
 
-  Future<http.Response> register(
-      login, firstName, lastName, email, langKey, password) async {
-    final response = await http.post(
-      Uri.parse("$baseUrl/api/AM/register"),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'login': login,
-        'firstName': firstName,
-        'lastName': lastName,
-        'email': email,
-        'langKey': langKey,
-        'password': password,
-      }),
-    );
+  Future<http.Response> register(registerModel) async {
+    final response = await http.post(Uri.parse("$baseUrl/api/AM/register"),
+        headers: {'Content-Type': 'application/json'},
+        body: registerModel.toJson());
 
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
-      final token = responseBody['token']; // Adjust based on your API response
+      final token = responseBody['token'];
       if (token != null) {
         await _authService.saveToken(token);
       }
@@ -34,20 +24,17 @@ class ApiService {
     return response;
   }
 
-  Future<http.Response> login(
-      login, password) async {
+  Future<http.Response> login(loginModel) async {
     final response = await http.post(
       Uri.parse("$baseUrl/api/authenticate"),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'username': login,
-        'password': password
-      }),
+      body: loginModel.toJson(),
     );
 
     if (response.statusCode == 200) {
+      // TODO: move token logic to controller?
       final responseBody = jsonDecode(response.body);
-      final token = responseBody['id_token']; // Adjust based on your API response
+      final token = responseBody['id_token'];
       if (token != null) {
         await _authService.saveToken(token);
       }
