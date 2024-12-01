@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mobile_app_development/screens/loginscreen.dart';
 import 'package:mobile_app_development/screens/registerscreen.dart';
 
-import '../screens/accountscreen.dart';
-import '../screens/homescreen.dart';
-import '../screens/mapscreen.dart';
 
 class LoggedOutContext extends StatefulWidget {
+  const LoggedOutContext({super.key});
+
   @override
   _LoggedOutState createState() => _LoggedOutState();
 }
@@ -16,8 +14,8 @@ class _LoggedOutState extends State<LoggedOutContext> {
   int _currentIndex = 0;
 
   final List<Widget> _tabs = [
-    LoginScreen(),
-    RegisterScreen()
+    const LoginScreen(),
+    const RegisterScreen()
   ];
 
   @override

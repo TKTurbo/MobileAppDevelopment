@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../screens/accountscreen.dart';
 import '../screens/homescreen.dart';
 import '../screens/mapscreen.dart';
 
 class LoggedInContext extends StatefulWidget {
+  const LoggedInContext({super.key});
+
   @override
   _LoggedInState createState() => _LoggedInState();
 }
@@ -14,9 +15,9 @@ class _LoggedInState extends State<LoggedInContext> {
   int _currentIndex = 0;
 
   final List<Widget> _tabs = [
-    HomeScreen(),
-    MapScreen(),
-    AccountScreen(),
+    const HomeScreen(),
+    const MapScreen(),
+    const AccountScreen(),
   ];
 
   @override

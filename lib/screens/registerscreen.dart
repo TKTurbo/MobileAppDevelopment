@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile_app_development/services/apiservice.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   RegisterState createState() => RegisterState();
 }
@@ -9,84 +12,96 @@ class RegisterScreen extends StatefulWidget {
 class RegisterState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final ApiService apiService = ApiService();
-    String _username = '';
-    String _firstname = '';
-    String _lastname = '';
-    String _email = '';
-    String _langkey = '';
-    String _password = '';
+    String username = '';
+    String firstname = '';
+    String lastname = '';
+    String email = '';
+    String langkey = '';
+    String password = '';
 
-    Future<void> _submitForm() async {
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState!.save(); // Save the form data
+    Future<void> submitForm() async {
+      if (formKey.currentState!.validate()) {
+        formKey.currentState!.save(); // Save the form data
 
-        var response = await apiService.register(_username, _firstname, _lastname, _email, _langkey, _password);
+        var response = await apiService.register(username, firstname, lastname, email, langkey, password);
+
+        if (response.statusCode == 200) {
+          context.go('/login'); // werkt nog niet? andere status code ofzo?
+        } else {
+          // er ging iets mis
+        }
+
+        print(response.body);
       }
     }
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('BlueWheels'),
+          title: const Text('BlueWheels'),
         ),
         body: Center(
           child: Container(
             color: Colors.white,
-            margin: EdgeInsets.all(32.0),
-            padding: EdgeInsets.all(16.0),
+            margin: const EdgeInsets.all(32.0),
+            padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Column(children: [
                 Text(
                   'Registreren',
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
+                TextButton(
+                  onPressed: () => context.go('/login'),
+                  child: const Text('Al een account?'),
+                ),
                 Form(
-                  key: _formKey,
+                  key: formKey,
                   child: Column(
                     children: [
                       TextFormField(
                         decoration:
-                        InputDecoration(labelText: 'Gebruikersnaam'),
+                        const InputDecoration(labelText: 'Gebruikersnaam'),
                         onSaved: (value) {
-                          _username = value!; // Save the entered email
+                          username = value!; // Save the entered email
                         },
                       ),
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Voornaam'),
+                        decoration: const InputDecoration(labelText: 'Voornaam'),
                         onSaved: (value) {
-                          _firstname = value!; // Save the entered email
+                          firstname = value!; // Save the entered email
                         },
                       ),
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Achternaam'),
+                        decoration: const InputDecoration(labelText: 'Achternaam'),
                         onSaved: (value) {
-                          _lastname = value!; // Save the entered email
+                          lastname = value!; // Save the entered email
                         },
                       ),
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'E-mailadres'),
+                        decoration: const InputDecoration(labelText: 'E-mailadres'),
                         onSaved: (value) {
-                          _email = value!; // Save the entered email
+                          email = value!; // Save the entered email
                         },
                       ),
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Taal'),
+                        decoration: const InputDecoration(labelText: 'Taal'),
                         onSaved: (value) {
-                          _langkey = value!; // Save the entered email
+                          langkey = value!; // Save the entered email
                         },
                       ),
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Wachtwoord'),
+                        decoration: const InputDecoration(labelText: 'Wachtwoord'),
                         onSaved: (value) {
-                          _password = value!; // Save the entered email
+                          password = value!; // Save the entered email
                         },
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         child: ElevatedButton(
                           onPressed: () async {
-                            await _submitForm();
+                            await submitForm();
                           },
                           child: const Text('Registreren'),
                         ),
