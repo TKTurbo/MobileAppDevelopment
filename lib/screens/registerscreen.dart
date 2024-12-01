@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app_development/services/apiservice.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class RegisterState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final ApiService apiService = ApiService();
     String _username = '';
     String _firstname = '';
     String _lastname = '';
@@ -16,10 +18,11 @@ class RegisterState extends State<RegisterScreen> {
     String _langkey = '';
     String _password = '';
 
-    void _submitForm() {
+    Future<void> _submitForm() async {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save(); // Save the form data
-        print('Name: $_username'); // Print the name
+
+        var response = await apiService.register(_username, _firstname, _lastname, _email, _langkey, _password);
       }
     }
 
@@ -82,7 +85,9 @@ class RegisterState extends State<RegisterScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         child: ElevatedButton(
-                          onPressed: _submitForm,
+                          onPressed: () async {
+                            await _submitForm();
+                          },
                           child: const Text('Registreren'),
                         ),
                       ),
