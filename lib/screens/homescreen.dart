@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app_development/screens/rental_view.dart';
+
+import '../widgets/mainbottomnavigation.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    //TODO kijken of user een rental heeft
-    bool hasRental = false;
-    return hasRental ? const Center(
-      child: Text('Home'),
-    ) : RentalView();
+    return Scaffold(
+      body: const Center(
+        child: Text('Home'),
+      ),
+      bottomNavigationBar: const MainBottomNavigation(
+        initialIndex: 0,
+      ),
+    );
   }
 }
