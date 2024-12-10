@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../controllers/rentalcontroller.dart';
+import '../dependencyinjection.dart';
 import '../models/rentalmodel.dart';
 import '../widgets/mainbottomnavigation.dart';
 
@@ -10,7 +11,7 @@ class RentalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RentalController _rentalController = RentalController();
+    RentalController _rentalController = DependencyInjection.getIt.get<RentalController>();
     return Scaffold(
       body: Column(
           children: [

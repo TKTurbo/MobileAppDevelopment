@@ -1,14 +1,11 @@
 import 'dart:convert';
-
 import 'package:mobile_app_development/models/rentalmodel.dart';
-import 'package:uuid/uuid.dart';
-
+import '../dependencyinjection.dart';
 import '../models/carmodel.dart';
-import '../models/customermodel.dart';
 import '../services/apiservice.dart';
 
 class RentalController {
-  final ApiService apiService = ApiService();
+  final ApiService apiService = DependencyInjection.getIt.get<ApiService>();
 
   Future<List<CarModel>> getAllCars() async {
     final response = await apiService.getAllCars();
@@ -50,7 +47,6 @@ class RentalController {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       //TODO return customer's rentals
     }
-
 
     return null;
   }

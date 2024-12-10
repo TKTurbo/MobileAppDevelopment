@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app_development/controllers/rentalcontroller.dart';
 
+import '../dependencyinjection.dart';
 import '../models/carmodel.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final RentalController controller = RentalController();
+  final RentalController controller = DependencyInjection.getIt.get<RentalController>();
   var _carList = [];
   var staticCarList = [];
 

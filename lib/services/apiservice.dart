@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:mobile_app_development/models/loginmodel.dart';
 import 'package:mobile_app_development/services/authservice.dart';
 
+import '../models/changepasswordmodel.dart';
 import '../models/rentalmodel.dart';
 
+import '../dependencyinjection.dart';
+
 class ApiService {
-  final _authService = AuthService();
+  final _authService = DependencyInjection.getIt.get<AuthService>();
   final String baseUrl = 'https://mad.thomaskreder.nl';
 
   Future<http.Response> register(registerModel) async {
@@ -105,6 +109,20 @@ class ApiService {
           'Authorization': 'Bearer ${token.toString()}',
         },
         body: rental.toJson(),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> changePassword(ChangePasswordModel changePasswordModel) async {
+    final token = await _authService.getToken();
+    final response = await http.post(
+      Uri.parse("$baseUrl/api/account/change-password"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      },
+      body: changePasswordModel.toJson(),
     );
 
     return response;

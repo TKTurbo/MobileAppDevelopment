@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../controllers/registercontroller.dart';
+import '../dependencyinjection.dart';
+import '../helpers/formhelper.dart';
 import '../models/registermodel.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -12,7 +14,7 @@ class RegisterScreen extends StatefulWidget {
 
 class RegisterState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final RegisterController _controller = RegisterController();
+  final RegisterController _controller = DependencyInjection.getIt.get<RegisterController>();
 
   final RegisterModel _registerModel = RegisterModel(
     username: '',
@@ -49,22 +51,22 @@ class RegisterState extends State<RegisterScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      _buildTextField('Gebruikersnaam', (value) {
+                      FormHelper.buildTextField('Gebruikersnaam', (value) {
                         _registerModel.username = value!;
                       }),
-                      _buildTextField('Voornaam', (value) {
+                      FormHelper.buildTextField('Voornaam', (value) {
                         _registerModel.firstname = value!;
                       }),
-                      _buildTextField('Achternaam', (value) {
+                      FormHelper.buildTextField('Achternaam', (value) {
                         _registerModel.lastname = value!;
                       }),
-                      _buildTextField('E-mailadres', (value) {
+                      FormHelper.buildTextField('E-mailadres', (value) {
                         _registerModel.email = value!;
                       }),
-                      _buildTextField('Taal', (value) {
+                      FormHelper.buildTextField('Taal', (value) {
                         _registerModel.langkey = value!;
                       }),
-                      _buildTextField('Wachtwoord', (value) {
+                      FormHelper.buildTextField('Wachtwoord', (value) {
                         _registerModel.password = value!;
                       }, obscureText: true),
                       Padding(
@@ -82,15 +84,6 @@ class RegisterState extends State<RegisterScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTextField(String label, Function(String?) onSaved,
-      {bool obscureText = false}) {
-    return TextFormField(
-      decoration: InputDecoration(labelText: label),
-      obscureText: obscureText,
-      onSaved: onSaved,
     );
   }
 

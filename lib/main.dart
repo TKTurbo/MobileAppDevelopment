@@ -8,6 +8,8 @@ import 'package:mobile_app_development/screens/loginscreen.dart';
 import 'package:mobile_app_development/screens/registerscreen.dart';
 import 'package:mobile_app_development/screens/rentalscreen.dart';
 
+import 'dependencyinjection.dart';
+
 // GoRouter configuration
 final _router = GoRouter(
   initialLocation: '/login',
@@ -50,7 +52,11 @@ final _router = GoRouter(
   ],
 );
 
-void main() => runApp(const MyApp());
+void main() {
+  DependencyInjection.configure();
+
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
