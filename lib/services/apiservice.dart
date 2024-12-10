@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobile_app_development/services/authservice.dart';
 
+import '../models/rentalmodel.dart';
+
 class ApiService {
   final _authService = AuthService();
-
   final String baseUrl = 'https://mad.thomaskreder.nl';
 
   Future<http.Response> register(registerModel) async {
@@ -39,6 +40,72 @@ class ApiService {
         await _authService.saveToken(token);
       }
     }
+
+    return response;
+  }
+
+  Future<http.Response> getAllCars() async {
+    final token = await _authService.getToken();
+    final response = await http.get(
+      Uri.parse("$baseUrl/api/cars"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      }
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getCar(id) async {
+    final token = await _authService.getToken();
+    final response = await http.get(
+        Uri.parse("$baseUrl/api/cars/$id"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${token.toString()}',
+        }
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getRentalCount() async {
+    final token = await _authService.getToken();
+    final response = await http.get(
+        Uri.parse("$baseUrl/api/rentals/count"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${token.toString()}',
+        }
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getCurrentCustomer() async {
+    final token = await _authService.getToken();
+    final response = await http.get(
+        Uri.parse("$baseUrl/api/AM/me"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${token.toString()}',
+        }
+    );
+
+    return response;
+  }
+
+  Future<http.Response> rentCar(RentalModel rental) async {
+    final token = await _authService.getToken();
+    final response = await http.post(
+        Uri.parse("$baseUrl/api/rentals"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${token.toString()}',
+        },
+        body: rental.toJson(),
+    );
 
     return response;
   }

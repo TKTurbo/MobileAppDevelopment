@@ -18,12 +18,12 @@ class MainBottomNavigation extends StatelessWidget {
       },
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: Icon(Icons.search),
+          label: 'Zoeken',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.map),
-          label: 'Kaart',
+          label: 'Verhuur',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

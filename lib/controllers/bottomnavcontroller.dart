@@ -8,7 +8,7 @@ class BottomNavController {
         context.go('/home');
         break;
       case 1:
-        context.go('/map');
+        context.go('/rentals');
         break;
       case 2:
         context.go('/account');
