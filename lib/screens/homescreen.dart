@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app_development/screens/rental_view.dart';
+import 'package:mobile_app_development/screens/searchscreen.dart';
 
 import '../widgets/mainbottomnavigation.dart';
 
@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: const Center(
-        child: RentalView(),
+        child: SearchScreen(),
       ),
       bottomNavigationBar: const MainBottomNavigation(
         initialIndex: 0,
