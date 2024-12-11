@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app_development/services/authservice.dart';
 
 import '../controllers/logincontroller.dart';
+import '../dependencyinjection.dart';
+import '../helpers/formhelper.dart';
 import '../models/loginmodel.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,8 +16,7 @@ class LoginScreen extends StatefulWidget {
 
 class LoginState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final LoginController _controller = LoginController();
-
+  final LoginController _controller = DependencyInjection.getIt.get<LoginController>();
   final LoginModel _loginModel = LoginModel(username: '', password: '');
 
   @override
@@ -43,10 +45,10 @@ class LoginState extends State<LoginScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      _buildTextField('Gebruikersnaam', (value) {
+                      FormHelper.buildTextField('Gebruikersnaam', (value) {
                         _loginModel.username = value!;
                       }),
-                      _buildTextField('Wachtwoord', (value) {
+                      FormHelper.buildTextField('Wachtwoord', (value) {
                         _loginModel.password = value!;
                       }, obscureText: true),
                       Padding(
@@ -64,15 +66,6 @@ class LoginState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTextField(String label, Function(String?) onSaved,
-      {bool obscureText = false}) {
-    return TextFormField(
-      decoration: InputDecoration(labelText: label),
-      obscureText: obscureText,
-      onSaved: onSaved,
     );
   }
 

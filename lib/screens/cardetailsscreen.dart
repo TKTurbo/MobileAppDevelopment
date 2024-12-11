@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../controllers/rentalcontroller.dart';
+import '../dependencyinjection.dart';
 import '../models/carmodel.dart';
 
 class CarDetailsScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class CarDetailsScreen extends StatefulWidget {
 }
 
 class _CarDetailsScreenState extends State<CarDetailsScreen> {
-  final RentalController _rentalController = RentalController();
+  final RentalController _rentalController = DependencyInjection.getIt.get<RentalController>();
   DateTime selectedStartDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
 
