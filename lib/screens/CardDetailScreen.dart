@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../controllers/rentalcontroller.dart';
-import '../dependencyinjection.dart';
-import '../models/carmodel.dart';
+import '../controllers/RentalController.dart';
+import '../DependencyInjection.dart';
+import '../models/CarModel.dart';
 
 class CarDetailsScreen extends StatefulWidget {
   final dynamic carId;

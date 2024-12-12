@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_app_development/controllers/accountcontroller.dart';
-import 'package:mobile_app_development/models/changepasswordmodel.dart';
+import 'package:mobile_app_development/controllers/ChangePasswordController.dart';
+import 'package:mobile_app_development/models/ChangePasswordModel.dart';
 
-import '../dependencyinjection.dart';
-import '../helpers/formhelper.dart';
-import '../services/authservice.dart';
+import '../DependencyInjection.dart';
+import '../helpers/FormHelper.dart';
+import '../services/AuthService.dart';
 import '../widgets/mainbottomnavigation.dart';
 
-class AccountScreen extends StatefulWidget {
-  const AccountScreen({super.key});
+class ChangeAccountInfoScreen extends StatefulWidget {
+  const ChangeAccountInfoScreen({super.key});
 
   @override
-  AccountState createState() => AccountState();
+  ChangeAccountInfoState createState() => ChangeAccountInfoState();
 }
 
-class AccountState extends State<AccountScreen> {
+class ChangeAccountInfoState extends State<ChangeAccountInfoScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AccountController _controller =
-      DependencyInjection.getIt.get<AccountController>();
+  final ChangePasswordController _controller =
+      DependencyInjection.getIt.get<ChangePasswordController>();
   final ChangePasswordModel _changePasswordModel =
       ChangePasswordModel(currentPassword: "", newPassword: "");
   final AuthService _authService = DependencyInjection.getIt.get<AuthService>();
@@ -80,11 +80,14 @@ class AccountState extends State<AccountScreen> {
       _authService.clearToken();
       context.go('/login');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Wachtwoord veranderd. Log A.u.b. opnieuw in.')),
+        const SnackBar(
+            content: Text('Wachtwoord veranderd. Log A.u.b. opnieuw in.')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Kon wachtwoord niet veranderen. Zorg dat het huidige wachtwoord klopt en het nieuwe wachtwoord voldoende lang is.')),
+        const SnackBar(
+            content: Text(
+                'Kon wachtwoord niet veranderen. Zorg dat het huidige wachtwoord klopt en het nieuwe wachtwoord voldoende lang is.')),
       );
     }
   }

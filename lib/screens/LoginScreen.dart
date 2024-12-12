@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_app_development/services/authservice.dart';
+import 'package:mobile_app_development/services/AuthService.dart';
 
-import '../controllers/logincontroller.dart';
-import '../dependencyinjection.dart';
-import '../helpers/formhelper.dart';
-import '../models/loginmodel.dart';
+import '../controllers/LoginController.dart';
+import '../DependencyInjection.dart';
+import '../helpers/FormHelper.dart';
+import '../models/LoginModel.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,7 +18,8 @@ class LoginScreen extends StatefulWidget {
 
 class LoginState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final LoginController _controller = DependencyInjection.getIt.get<LoginController>();
+  final LoginController _controller =
+      DependencyInjection.getIt.get<LoginController>();
   final LoginModel _loginModel = LoginModel(username: '', password: '');
 
   @override
@@ -82,6 +85,14 @@ class LoginState extends State<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Gebruikersnaam of wachtwoord verkeerd')),
       );
+    }
+  }
+
+  _navigateIfLoggedIn() async {
+    var loggedIn = await _controller.isLoggedIn();
+
+    if(loggedIn) {
+      context.go('/home');
     }
   }
 }

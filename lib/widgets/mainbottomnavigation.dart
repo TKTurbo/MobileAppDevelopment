@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../controllers/bottomnavcontroller.dart';
+import '../controllers/BottomNavController.dart';
 
 class MainBottomNavigation extends StatelessWidget {
   final int initialIndex;

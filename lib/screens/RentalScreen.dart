@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../controllers/rentalcontroller.dart';
-import '../dependencyinjection.dart';
-import '../models/rentalmodel.dart';
+import '../controllers/RentalController.dart';
+import '../DependencyInjection.dart';
+import '../models/RentalModel.dart';
 import '../widgets/mainbottomnavigation.dart';
 
 class RentalScreen extends StatelessWidget {
