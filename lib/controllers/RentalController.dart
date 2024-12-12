@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:mobile_app_development/models/rentalmodel.dart';
-import '../dependencyinjection.dart';
-import '../models/carmodel.dart';
-import '../services/apiservice.dart';
+import 'package:mobile_app_development/models/RentalModel.dart';
+import '../DependencyInjection.dart';
+import '../models/CarModel.dart';
+import '../services/ApiService.dart';
 
 class RentalController {
   final ApiService apiService = DependencyInjection.getIt.get<ApiService>();

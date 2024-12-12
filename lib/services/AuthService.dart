@@ -15,4 +15,10 @@ class AuthService {
   Future<void> clearToken() async {
     await _storage.delete(key: _tokenKey);
   }
+
+  Future<bool> isLoggedIn() async {
+    var key = await _storage.read(key: _tokenKey);
+
+    return key != null;
+  }
 }

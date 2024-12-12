@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app_development/screens/searchscreen.dart';
+import 'package:mobile_app_development/screens/SearchScreen.dart';
 
 import '../widgets/mainbottomnavigation.dart';
 

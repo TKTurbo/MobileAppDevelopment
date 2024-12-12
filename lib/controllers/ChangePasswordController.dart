@@ -1,8 +1,8 @@
-import 'package:mobile_app_development/models/changepasswordmodel.dart';
-import 'package:mobile_app_development/services/apiservice.dart';
-import '../dependencyinjection.dart';
+import 'package:mobile_app_development/models/ChangePasswordModel.dart';
+import 'package:mobile_app_development/services/ApiService.dart';
+import '../DependencyInjection.dart';
 
-class AccountController {
+class ChangePasswordController {
   final ApiService apiService = DependencyInjection.getIt.get<ApiService>();
 
   Future<bool> changePassword(ChangePasswordModel changePasswordModel) async {

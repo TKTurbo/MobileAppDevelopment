@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_app_development/screens/accountscreen.dart';
-import 'package:mobile_app_development/screens/searchscreen.dart';
-import 'package:mobile_app_development/screens/cardetailsscreen.dart';
-import 'package:mobile_app_development/screens/homescreen.dart';
-import 'package:mobile_app_development/screens/loginscreen.dart';
-import 'package:mobile_app_development/screens/registerscreen.dart';
-import 'package:mobile_app_development/screens/rentalscreen.dart';
+import 'package:mobile_app_development/screens/AccountScreen.dart';
+import 'package:mobile_app_development/screens/ChangePasswordScreen.dart';
+import 'package:mobile_app_development/screens/SearchScreen.dart';
+import 'package:mobile_app_development/screens/CardDetailScreen.dart';
+import 'package:mobile_app_development/screens/HomeScreen.dart';
+import 'package:mobile_app_development/screens/LoginScreen.dart';
+import 'package:mobile_app_development/screens/RegisterScreen.dart';
+import 'package:mobile_app_development/screens/RentalScreen.dart';
 
-import 'dependencyinjection.dart';
+import 'DependencyInjection.dart';
 
 // GoRouter configuration
 final _router = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/',
   routes: [
+    GoRoute(
+      path: '/',
+      redirect: (BuildContext context, GoRouterState state) {
+        if (false) {
+          // TODO: Get logged in status and route to home or login
+          return '/home';
+        } else {
+          return '/login';
+        }
+      },
+    ),
     GoRoute(
       name: 'login',
       path: '/login',
@@ -35,6 +47,11 @@ final _router = GoRouter(
       builder: (context, state) => const AccountScreen(),
     ),
     GoRoute(
+      name: 'changepassword',
+      path: '/changepassword',
+      builder: (context, state) => const ChangePasswordScreen(),
+    ),
+    GoRoute(
       name: 'cars',
       path: '/cars',
       builder: (context, state) => const SearchScreen(),
@@ -47,14 +64,14 @@ final _router = GoRouter(
     GoRoute(
       name: 'car_details',
       path: '/cars/:carId',
-      builder: (context, state) => CarDetailsScreen(carId: state.pathParameters['carId']),
+      builder: (context, state) =>
+          CarDetailsScreen(carId: state.pathParameters['carId']),
     ),
   ],
 );
 
 void main() {
   DependencyInjection.configure();
-
   runApp(const MyApp());
 }
 

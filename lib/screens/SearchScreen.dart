@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_app_development/controllers/rentalcontroller.dart';
+import 'package:mobile_app_development/controllers/RentalController.dart';
 
-import '../dependencyinjection.dart';
-import '../models/carmodel.dart';
+import '../DependencyInjection.dart';
+import '../models/CarModel.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});

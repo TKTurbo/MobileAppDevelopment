@@ -3,6 +3,7 @@ import 'dart:convert';
 class LoginModel {
   String username;
   String password;
+  bool rememberMe = true;
 
   LoginModel({
     required this.username,
@@ -10,6 +11,6 @@ class LoginModel {
   });
 
   String toJson() {
-    return jsonEncode({'username': username, 'password': password});
+    return jsonEncode({'username': username, 'password': password, 'rememberMe': rememberMe});
   }
 }

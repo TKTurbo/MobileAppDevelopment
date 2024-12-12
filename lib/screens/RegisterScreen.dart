@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../controllers/registercontroller.dart';
-import '../dependencyinjection.dart';
-import '../helpers/formhelper.dart';
-import '../models/registermodel.dart';
+import '../controllers/RegisterController.dart';
+import '../DependencyInjection.dart';
+import '../helpers/FormHelper.dart';
+import '../models/RegisterModel.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
