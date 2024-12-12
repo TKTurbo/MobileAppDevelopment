@@ -8,7 +8,6 @@ import 'package:mobile_app_development/screens/HomeScreen.dart';
 import 'package:mobile_app_development/screens/LoginScreen.dart';
 import 'package:mobile_app_development/screens/RegisterScreen.dart';
 import 'package:mobile_app_development/screens/RentalScreen.dart';
-import 'package:mobile_app_development/services/AuthService.dart';
 
 import 'DependencyInjection.dart';
 
@@ -19,7 +18,8 @@ final _router = GoRouter(
     GoRoute(
       path: '/',
       redirect: (BuildContext context, GoRouterState state) {
-        if (false) { // TODO: Get logged in status and route to home or login
+        if (false) {
+          // TODO: Get logged in status and route to home or login
           return '/home';
         } else {
           return '/login';
@@ -64,14 +64,14 @@ final _router = GoRouter(
     GoRoute(
       name: 'car_details',
       path: '/cars/:carId',
-      builder: (context, state) => CarDetailsScreen(carId: state.pathParameters['carId']),
+      builder: (context, state) =>
+          CarDetailsScreen(carId: state.pathParameters['carId']),
     ),
   ],
 );
 
 void main() {
   DependencyInjection.configure();
-
   runApp(const MyApp());
 }
 
