@@ -6,7 +6,7 @@ import '../DependencyInjection.dart';
 import '../models/CarModel.dart';
 
 class CarDetailsScreen extends StatefulWidget {
-  final dynamic carId;
+  final int carId;
   const CarDetailsScreen({super.key, required this.carId});
 
   @override
@@ -20,6 +20,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var a = _rentalController.getCar(widget.carId);
     return FutureBuilder(
         future: _rentalController.getCar(widget.carId),
         builder: (BuildContext context, AsyncSnapshot<CarModel?> snapshot) {
