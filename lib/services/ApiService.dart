@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-import 'package:mobile_app_development/models/LoginModel.dart';
+import 'package:mobile_app_development/models/AccountInfoModel.dart';
 import 'package:mobile_app_development/services/AuthService.dart';
 
 import '../models/ChangePasswordModel.dart';
@@ -21,15 +19,16 @@ class ApiService {
 
   Future<http.Response> getCurrentCustomer() async => await _get('/AM/me');
 
-  Future<http.Response> getAccountInfo() async =>
-      await _get('/account/change-password');
-
   Future<http.Response> rentCar(RentalModel rental) async =>
       await _post('/rentals', rental.toJson());
 
   Future<http.Response> changePassword(
           ChangePasswordModel changePasswordModel) async =>
       await _post('/account/change-password', changePasswordModel.toJson());
+
+  Future<http.Response> changeAccountInfo(
+          AccountInfoModel accountInfoModel) async =>
+      await _post('/AM/account', accountInfoModel.toJson());
 
   Future<http.Response> register(registerModel) async =>
       await _post('/AM/register', registerModel.toJson(), includeAuth: false);

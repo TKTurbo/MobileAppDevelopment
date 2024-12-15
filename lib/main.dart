@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app_development/screens/AccountScreen.dart';
+import 'package:mobile_app_development/screens/ChangeAccountInfoScreen.dart';
 import 'package:mobile_app_development/screens/ChangePasswordScreen.dart';
 import 'package:mobile_app_development/screens/SearchScreen.dart';
 import 'package:mobile_app_development/screens/CardDetailScreen.dart';
@@ -50,6 +51,11 @@ final _router = GoRouter(
       name: 'changepassword',
       path: '/changepassword',
       builder: (context, state) => const ChangePasswordScreen(),
+    ),
+    GoRoute(
+      name: 'changeinfo',
+      path: '/changeinfo',
+      builder: (context, state) => const ChangeAccountInfoScreen(),
     ),
     GoRoute(
       name: 'cars',
