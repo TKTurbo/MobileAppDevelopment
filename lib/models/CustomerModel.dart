@@ -2,10 +2,10 @@ import 'dart:convert';
 
 class CustomerModel {
   int id;
-  int nr;
+  int? nr;
   String lastName;
   String firstName;
-  String from;
+  String? from;
   dynamic systemUser;
   dynamic rentals;
 
@@ -32,6 +32,7 @@ class CustomerModel {
   }
 
   static CustomerModel fromJson(data) {
+
     return CustomerModel(
         id: data['id'],
         nr: data['nr'],

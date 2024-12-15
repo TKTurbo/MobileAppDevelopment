@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 class RentalModel {
-  int id;
+  int? id;
   String code;
-  double longitude;
-  double latitude;
+  String longitude;
+  String latitude;
   String fromDate;
   String toDate;
   String state;
@@ -27,7 +27,7 @@ class RentalModel {
 
   String toJson() {
     return jsonEncode({
-      'id': id,
+//      'id': id,
       'code': code,
       'longitude': longitude,
       'latitude': latitude,
@@ -35,8 +35,8 @@ class RentalModel {
       'toDate': toDate,
       'state': state,
       'inspections': inspections,
-      'customer': customer,
-      'car': car,
+      'customer': json.decode(customer),
+      'car': json.decode(car),
     });
   }
 
@@ -44,8 +44,8 @@ class RentalModel {
     return RentalModel(
       id: rental['id'],
       code: rental['code'],
-      longitude: rental['longitude'],
-      latitude: rental['latitiude'],
+      longitude: rental['longitude'].toString(),
+      latitude: rental['latitude'].toString(),
       fromDate: rental['fromDate'],
       toDate: rental['toDate'],
       state: rental['state'],

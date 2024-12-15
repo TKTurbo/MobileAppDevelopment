@@ -6,7 +6,7 @@ import '../DependencyInjection.dart';
 import '../models/CarModel.dart';
 
 class CarDetailsScreen extends StatefulWidget {
-  final dynamic carId;
+  final int carId;
   const CarDetailsScreen({super.key, required this.carId});
 
   @override
@@ -107,7 +107,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   _confirmRental(CarModel car, DateTime startDate, DateTime endDate) async {
     var successfullyRented = await _rentalController.rentCar(car, startDate, endDate);
     if (successfullyRented) {
-      context.go('/home');
+      context.go('/rentals');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Huren gelukt')),
       );

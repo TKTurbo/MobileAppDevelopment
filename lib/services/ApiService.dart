@@ -13,7 +13,12 @@ class ApiService {
 
   Future<http.Response> getAllCars() async => await _get('/cars');
 
+  //TODO hack. Remove when rentals can be acquired via a customer
+  Future<http.Response> getAllRentals() async => await _get('/rentals');
+
   Future<http.Response> getCar(int id) async => await _get('/cars/$id');
+
+  Future<http.Response> getRental(int id) async => await _get('/rentals/$id');
 
   Future<http.Response> getRentalCount() async => await _get('/rentals/count');
 
