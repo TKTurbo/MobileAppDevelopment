@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_app_development/controllers/ChangePasswordController.dart';
-import 'package:mobile_app_development/models/ChangePasswordModel.dart';
+import 'package:mobile_app_development/controllers/AccountController.dart';
+import 'package:mobile_app_development/models/AccountInfoModel.dart';
 
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
@@ -17,11 +17,18 @@ class ChangeAccountInfoScreen extends StatefulWidget {
 
 class ChangeAccountInfoState extends State<ChangeAccountInfoScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final ChangePasswordController _controller =
-      DependencyInjection.getIt.get<ChangePasswordController>();
-  final ChangePasswordModel _changePasswordModel =
-      ChangePasswordModel(currentPassword: "", newPassword: "");
+  final AccountController _controller =
+      DependencyInjection.getIt.get<AccountController>();
+  late AccountInfoModel _accountInfoModel;
   final AuthService _authService = DependencyInjection.getIt.get<AuthService>();
+
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAccountInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,29 +42,37 @@ class ChangeAccountInfoState extends State<ChangeAccountInfoScreen> {
             child: Column(
               children: [
                 Text(
-                  'Wachtwoord veranderen',
+                  'Account info wijzigen',
                   style: Theme.of(context).textTheme.displaySmall,
                 ),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      FormHelper.buildTextField('Huidig wachtwoord', (value) {
-                        _changePasswordModel.currentPassword = value!;
-                      }, obscureText: true),
-                      FormHelper.buildTextField('Nieuw wachtwoord', (value) {
-                        _changePasswordModel.newPassword = value!;
-                      }, obscureText: true),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        child: ElevatedButton(
-                          onPressed: () => _handleSubmit(context),
-                          child: const Text('Wachtwoord wijzigen'),
+                _isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            FormHelper.buildTextField('Voornaam', (value) {
+                              _accountInfoModel.firstName = value!;
+                            }, initialValue: _accountInfoModel.firstName),
+                            FormHelper.buildTextField('Achternaam', (value) {
+                              _accountInfoModel.lastName = value!;
+                            }, initialValue: _accountInfoModel.lastName),
+                            FormHelper.buildTextField('E-mailadres', (value) {
+                              _accountInfoModel.email = value!;
+                            }, initialValue: _accountInfoModel.email),
+                            FormHelper.buildTextField('Taal', (value) {
+                              _accountInfoModel.langKey = value!;
+                            }, initialValue: _accountInfoModel.langKey),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: ElevatedButton(
+                                onPressed: () => _handleSubmit(context),
+                                child: const Text('Accountinfo wijzigen'),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
@@ -74,21 +89,24 @@ class ChangeAccountInfoState extends State<ChangeAccountInfoScreen> {
       _formKey.currentState!.save();
     }
 
-    bool isSuccess = await _controller.changePassword(_changePasswordModel);
+    bool isSuccess = await _controller.changeAccountInfo(_accountInfoModel);
 
     if (isSuccess) {
-      _authService.clearToken();
-      context.go('/login');
+      context.go('/account');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Wachtwoord veranderd. Log A.u.b. opnieuw in.')),
+        const SnackBar(content: Text('Accountinfo gewijzigd')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-                'Kon wachtwoord niet veranderen. Zorg dat het huidige wachtwoord klopt en het nieuwe wachtwoord voldoende lang is.')),
+        const SnackBar(content: Text('Kon accountinfo niet wijzigen')),
       );
     }
+  }
+
+  Future<void> _fetchAccountInfo() async {
+    _accountInfoModel = await _controller.getAccountInfo();
+    setState(() {
+      _isLoading = false;
+    });
   }
 }
