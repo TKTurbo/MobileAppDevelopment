@@ -20,7 +20,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var a = _rentalController.getCar(widget.carId);
     return FutureBuilder(
         future: _rentalController.getCar(widget.carId),
         builder: (BuildContext context, AsyncSnapshot<CarModel?> snapshot) {
@@ -108,7 +107,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   _confirmRental(CarModel car, DateTime startDate, DateTime endDate) async {
     var successfullyRented = await _rentalController.rentCar(car, startDate, endDate);
     if (successfullyRented) {
-      context.go('/home');
+      context.go('/rentals');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Huren gelukt')),
       );

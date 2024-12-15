@@ -3,8 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app_development/screens/AccountScreen.dart';
 import 'package:mobile_app_development/screens/ChangeAccountInfoScreen.dart';
 import 'package:mobile_app_development/screens/ChangePasswordScreen.dart';
+import 'package:mobile_app_development/screens/RentalDetailScreen.dart';
 import 'package:mobile_app_development/screens/SearchScreen.dart';
-import 'package:mobile_app_development/screens/CardDetailScreen.dart';
+import 'package:mobile_app_development/screens/CarDetailScreen.dart';
 import 'package:mobile_app_development/screens/HomeScreen.dart';
 import 'package:mobile_app_development/screens/LoginScreen.dart';
 import 'package:mobile_app_development/screens/RegisterScreen.dart';
@@ -71,7 +72,13 @@ final _router = GoRouter(
       name: 'car_details',
       path: '/cars/:carId',
       builder: (context, state) =>
-          CarDetailsScreen(carId: state.pathParameters['carId']),
+          CarDetailsScreen(carId: int.parse(state.pathParameters['carId']!)),
+    ),
+    GoRoute(
+      name: 'rental_details',
+      path: '/rentals/:rentalId',
+      builder: (context, state) =>
+          RentalDetailScreen(rentalId: int.parse(state.pathParameters['rentalId']!)),
     ),
   ],
 );

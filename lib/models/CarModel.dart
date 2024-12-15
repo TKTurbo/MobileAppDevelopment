@@ -12,6 +12,8 @@ class CarModel {
   int modelYear;
   String since;
   String body;
+  String longitude;
+  String latitude;
 
   CarModel({
     required this.id,
@@ -25,6 +27,8 @@ class CarModel {
     required this.modelYear,
     required this.since,
     required this.body,
+    required this.longitude,
+    required this.latitude,
   });
 
   String toJson() {
@@ -40,6 +44,8 @@ class CarModel {
       'modelYear': modelYear,
       'since': since,
       'body': body,
+      'longitude': longitude,
+      'latitude': latitude,
     });
   }
 
@@ -55,7 +61,9 @@ class CarModel {
       engineSize: car['engineSize'],
       modelYear: car['modelYear'],
       since: car['since'],
-      body: car['body']
+      body: car['body'],
+      longitude: car['longitude'].toString(),
+      latitude: car['latitude'].toString(),
     );
   }
 

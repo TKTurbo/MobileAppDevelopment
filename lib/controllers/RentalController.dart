@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'package:mobile_app_development/models/CustomerModel.dart';
 import 'package:mobile_app_development/models/RentalModel.dart';
+import 'package:uuid/uuid.dart';
 import '../DependencyInjection.dart';
 import '../models/CarModel.dart';
 import '../services/ApiService.dart';
@@ -24,7 +27,7 @@ class RentalController {
     return [];
   }
 
-  Future<CarModel?> getCar(id) async {
+  Future<CarModel?> getCar(int id) async {
     final response = await apiService.getCar(id);
 
     if (response.statusCode == 200) {
@@ -37,15 +40,64 @@ class RentalController {
   }
 
   Future<bool> rentCar(CarModel car, DateTime from, DateTime to) async {
-    //TODO call api to rent car
+    var getCustomer = await apiService.getCurrentCustomer();
+    var customer = CustomerModel.fromJson(json.decode(getCustomer.body));
+
+    final formatter = DateFormat("yyyy-MM-dd");
+    final rental = RentalModel(
+      id: null,
+      code: Uuid().v4(),
+      longitude: car.longitude,
+      latitude: car.latitude,
+      fromDate: formatter.format(from),
+      toDate: formatter.format(to),
+      state: "RESERVED",
+      inspections: null,
+      customer: customer.toJson(),
+      car: car.toJson(),
+    );
+
+    var response = await apiService.rentCar(rental);
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return true;
+    }
+
     return false;
   }
 
-  Future<List<RentalModel>?> getRentals() async {
-    final response = await apiService.getCurrentCustomer();
+  Future<List<RentalModel>> getRentals() async {
+    //TODO hack. This should get the rentals via a customer
+    final response = await apiService.getAllRentals();
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      //TODO return customer's rentals
+      var jsonBody = json.decode(response.body);
+
+      final customerJson = await apiService.getCurrentCustomer();
+      CustomerModel customer = CustomerModel.fromJson(json.decode(customerJson.body));
+
+      List<RentalModel> customerRentals = [];
+      for (var i = 0; i < jsonBody.length; i++) {
+        if (jsonBody[i]['customer'] != null) {
+          if (jsonBody[i]['customer']['id'] == customer.id) {
+            RentalModel rental = RentalModel.fromJson(jsonBody[i]);
+            customerRentals.add(rental);
+          }
+        }
+      }
+      return customerRentals;
+    }
+
+    return [];
+  }
+
+  Future<RentalModel?> getRental(int id) async {
+    final response = await apiService.getRental(id);
+
+    if (response.statusCode == 200) {
+      final rentalJson = json.decode(response.body);
+      final rental = RentalModel.fromJson(rentalJson);
+      return rental;
     }
 
     return null;
