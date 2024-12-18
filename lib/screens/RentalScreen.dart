@@ -24,7 +24,7 @@ class RentalScreen extends StatelessWidget {
               style: TextStyle(fontSize: 50, color: Color(0xFFFFFFFF)),
             ),
             FutureBuilder(
-                future: _rentalController.getRentals(),
+                future: _rentalController.getActiveRentals(),
                 builder: (BuildContext context, AsyncSnapshot<List<RentalModel>> snapshot) {
                   if (snapshot.hasData) {
                     List<RentalModel>? rentals = snapshot.data;
@@ -33,7 +33,6 @@ class RentalScreen extends StatelessWidget {
                         itemCount: rentals!.length,
                           itemBuilder: (context, index) {
                           final rental = rentals[index];
-                          print(rental.car);
                             return GestureDetector(
                               onTap: () => context.goNamed('rental_details', pathParameters: {'rentalId': rental.id.toString()}),
                               child: Card(
