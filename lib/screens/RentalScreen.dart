@@ -33,7 +33,6 @@ class RentalScreen extends StatelessWidget {
                         itemCount: rentals!.length,
                           itemBuilder: (context, index) {
                           final rental = rentals[index];
-                          print(rental.car);
                             return GestureDetector(
                               onTap: () => context.goNamed('rental_details', pathParameters: {'rentalId': rental.id.toString()}),
                               child: Card(

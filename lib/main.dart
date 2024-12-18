@@ -4,6 +4,7 @@ import 'package:mobile_app_development/screens/AccountScreen.dart';
 import 'package:mobile_app_development/screens/ChangeAccountInfoScreen.dart';
 import 'package:mobile_app_development/screens/ChangePasswordScreen.dart';
 import 'package:mobile_app_development/screens/RentalDetailScreen.dart';
+import 'package:mobile_app_development/screens/RentalHistoryScreen.dart';
 import 'package:mobile_app_development/screens/SearchScreen.dart';
 import 'package:mobile_app_development/screens/CarDetailScreen.dart';
 import 'package:mobile_app_development/screens/HomeScreen.dart';
@@ -79,6 +80,11 @@ final _router = GoRouter(
       path: '/rentals/:rentalId',
       builder: (context, state) =>
           RentalDetailScreen(rentalId: int.parse(state.pathParameters['rentalId']!)),
+    ),
+    GoRoute(
+      name: 'rental_history',
+      path: '/rentalhistory',
+      builder: (context, state) => const RentalHistoryScreen(),
     ),
   ],
 );

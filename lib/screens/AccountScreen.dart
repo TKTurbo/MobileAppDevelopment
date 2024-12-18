@@ -22,6 +22,10 @@ class AccountState extends State<AccountScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
+              onPressed: () => context.go('/rentalhistory'),
+              child: const Text('Huurgeschiedenis'),
+            ),
+            ElevatedButton(
               onPressed: () => context.go('/changeinfo'),
               child: const Text('Account info wijzigen'),
             ),
