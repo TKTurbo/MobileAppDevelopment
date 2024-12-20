@@ -6,9 +6,11 @@ import 'package:uuid/uuid.dart';
 import '../DependencyInjection.dart';
 import '../models/CarModel.dart';
 import '../services/ApiService.dart';
+import '../services/NotificationService.dart';
 
 class RentalController {
   final ApiService apiService = DependencyInjection.getIt.get<ApiService>();
+  final NotificationService notificationService = DependencyInjection.getIt.get<NotificationService>();
 
   Future<List<CarModel>> getAllCars() async {
     final response = await apiService.getAllCars();
@@ -57,11 +59,14 @@ class RentalController {
       car: car.toJson(),
     );
 
+    // TODO uitgecomment om push berichten te testen
     var response = await apiService.rentCar(rental);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
+      notificationService.scheduleReturnReminder(to, car);
       return true;
     }
+
 
     return false;
   }
