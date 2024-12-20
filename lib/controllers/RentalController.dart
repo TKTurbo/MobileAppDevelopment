@@ -67,24 +67,21 @@ class RentalController {
   }
 
   Future<List<RentalModel>> getRentals() async {
-    //TODO hack. This should get the rentals via a customer
-    final response = await apiService.getAllRentals();
+    final response = await apiService.getCurrentCustomer();
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      var jsonBody = json.decode(response.body);
+      var responseBody = json.decode(response.body);
 
-      final customerJson = await apiService.getCurrentCustomer();
-      CustomerModel customer = CustomerModel.fromJson(json.decode(customerJson.body));
+      CustomerModel customer = CustomerModel.fromJson(responseBody);
 
       List<RentalModel> customerRentals = [];
-      for (var i = 0; i < jsonBody.length; i++) {
-        if (jsonBody[i]['customer'] != null) {
-          if (jsonBody[i]['customer']['id'] == customer.id) {
-            RentalModel rental = RentalModel.fromJson(jsonBody[i]);
-            customerRentals.add(rental);
-          }
+      if (customer.rentals != null) {
+        for (var i = 0; i < customer.rentals.length; i++) {
+          RentalModel rental = RentalModel.fromJson(customer.rentals[i]);
+           customerRentals.add(rental);
         }
       }
+
       return customerRentals;
     }
 
@@ -92,23 +89,23 @@ class RentalController {
   }
 
   Future<List<RentalModel>> getActiveRentals() async {
-    //TODO hack. This should get the rentals via a customer
-    final response = await apiService.getAllRentals();
+    final response = await apiService.getCurrentCustomer();
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      var jsonBody = json.decode(response.body);
+      var responseBody = json.decode(response.body);
 
-      final customerJson = await apiService.getCurrentCustomer();
-      CustomerModel customer = CustomerModel.fromJson(json.decode(customerJson.body));
+      CustomerModel customer = CustomerModel.fromJson(responseBody);
+
       List<RentalModel> customerRentals = [];
-      for (var i = 0; i < jsonBody.length; i++) {
-        if (jsonBody[i]['customer'] != null) {
-          if (jsonBody[i]['customer']['id'] == customer.id && (jsonBody[i]['state'] == 'RESERVED' || jsonBody[i]['state'] == 'ACTIVE' || jsonBody[i]['state'] == 'PICKUP')) {
-            RentalModel rental = RentalModel.fromJson(jsonBody[i]);
-            customerRentals.add(rental);
-          }
+      if (customer.rentals != null) {
+        for (var i = 0; i < customer.rentals.length; i++) {
+          if (customer.rentals[i]['state'] == 'RESERVED' || customer.rentals[i]['state'] == 'ACTIVE') {
+              RentalModel rental = RentalModel.fromJson(customer.rentals[i]);
+              customerRentals.add(rental);
+            }
         }
       }
+
       return customerRentals;
     }
 
