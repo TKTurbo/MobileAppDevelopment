@@ -25,16 +25,17 @@ class NotificationService {
     final String timeZoneName = await FlutterTimezone.getLocalTimezone();
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation(timeZoneName));
-
   }
 
-  Future<void> scheduleReturnReminder(DateTime scheduledDateTime, CarModel car) async {
+  Future<void> scheduleReturnReminder(DateTime endDate, CarModel car) async {
     //Schedule a reminder for returning the car an hour before the rental period ends
+    //Reminder is scheduled one hour before the end of the rental
+    final reminderDateTime = tz.TZDateTime.from(endDate.subtract(const Duration(hours: 1)), tz.local);
     await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
         'Auto terug brengen',
         'Uw boeking van de ${car.brand} ${car.model} verloopt over een uur. Breng de auto svp binnen een uur terug op de aangewezen parkeerplaats.',
-        tz.TZDateTime.from(scheduledDateTime.subtract(const Duration(hours: 1)), tz.local),
+        reminderDateTime,
         const NotificationDetails(
           android: AndroidNotificationDetails(
               'status_change',

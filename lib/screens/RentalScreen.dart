@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 
 import '../controllers/RentalController.dart';
 import '../DependencyInjection.dart';
 import '../models/RentalModel.dart';
+import '../services/NotificationService.dart';
 import '../widgets/mainbottomnavigation.dart';
 
 class RentalScreen extends StatelessWidget {
@@ -14,6 +16,7 @@ class RentalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RentalController _rentalController = DependencyInjection.getIt.get<RentalController>();
+
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(top: 80),
