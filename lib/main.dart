@@ -11,6 +11,7 @@ import 'package:mobile_app_development/screens/HomeScreen.dart';
 import 'package:mobile_app_development/screens/LoginScreen.dart';
 import 'package:mobile_app_development/screens/RegisterScreen.dart';
 import 'package:mobile_app_development/screens/RentalScreen.dart';
+import 'package:mobile_app_development/services/NotificationService.dart';
 
 import 'DependencyInjection.dart';
 
@@ -90,7 +91,10 @@ final _router = GoRouter(
 );
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection.configure();
+  final notificationService = DependencyInjection.getIt.get<NotificationService>();
+  notificationService.init();
   runApp(const MyApp());
 }
 
