@@ -6,6 +6,7 @@ import 'package:mobile_app_development/controllers/RegisterController.dart';
 import 'package:mobile_app_development/controllers/RentalController.dart';
 import 'package:mobile_app_development/services/ApiService.dart';
 import 'package:mobile_app_development/services/AuthService.dart';
+import 'package:mobile_app_development/services/NotificationService.dart';
 
 class DependencyInjection {
   static GetIt getIt = GetIt.instance;
@@ -13,6 +14,7 @@ class DependencyInjection {
   static void configure() {
     getIt.registerSingleton<AuthService>(AuthService());
     getIt.registerSingleton<ApiService>(ApiService());
+    getIt.registerSingleton<NotificationService>(NotificationService());
 
     getIt.registerSingleton<ChangePasswordController>(ChangePasswordController());
     getIt.registerSingleton<LoginController>(LoginController());
