@@ -8,6 +8,7 @@ import '../models/RentalModel.dart';
 
 class RentalDetailScreen extends StatefulWidget {
   final int rentalId;
+
   const RentalDetailScreen({super.key, required this.rentalId});
 
   @override
@@ -15,7 +16,8 @@ class RentalDetailScreen extends StatefulWidget {
 }
 
 class _RentalDetailScreenState extends State<RentalDetailScreen> {
-  final RentalController _rentalController = DependencyInjection.getIt.get<RentalController>();
+  final RentalController _rentalController =
+      DependencyInjection.getIt.get<RentalController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +28,15 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
             final rental = snapshot.data;
             return Scaffold(
                 body: Center(
-                  child: Text(rental!.code)
-                )
-            );
+                    child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                  onPressed: () => context.go('/createinspectionscreen'),
+                  child: const Text('Melding maken'),
+                ),
+              ],
+            )));
           } else {
             print(snapshot.error);
             return Scaffold(body: Text('Fout bij het laden van de boeking'));
@@ -36,4 +44,3 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
         });
   }
 }
-
