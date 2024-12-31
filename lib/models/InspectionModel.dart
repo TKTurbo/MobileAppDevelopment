@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+// TODO: fix class so it can be reused for displaying and editing
 class InspectionModel {
   int id;
   String code;
@@ -8,7 +9,7 @@ class InspectionModel {
   String description;
   String photo;
   String photoContentType;
-  //DateTime completed;
+  DateTime completed;
 
   InspectionModel({
     required this.id,
@@ -18,7 +19,7 @@ class InspectionModel {
     required this.description,
     required this.photo,
     required this.photoContentType,
-    //required this.completed,
+    required this.completed,
   });
 
   factory InspectionModel.fromJson(Map<String, dynamic> json) {
@@ -30,7 +31,7 @@ class InspectionModel {
       description: json['description'],
       photo: json['photo'],
       photoContentType: json['photoContentType'],
-      //completed: DateTime.parse(json['completed']),
+      completed: DateTime.parse(json['completed']),
     );
   }
 
@@ -43,7 +44,7 @@ class InspectionModel {
       'description': description,
       'photo': photo,
       'photoContentType': photoContentType,
-      'completed': "2024-12-31T17:05:08.803Z",
+      'completed': completed.toIso8601String(),
     });
   }
 

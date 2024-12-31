@@ -21,7 +21,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final InspectionController _controller =
       DependencyInjection.getIt.get<InspectionController>();
-  final InspectionModel _inspectionModel = InspectionModel(id: 0, code: "", odometer: 0, result: "", description: "", photo: "", photoContentType: "");
+  final InspectionModel _inspectionModel = InspectionModel(id: 0, code: "", odometer: 0, result: "", description: "", photo: "", photoContentType: "", completed: DateTime.now().toUtc());
 
   File? _image;
 
@@ -92,7 +92,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
 
       _controller.addInspection(_inspectionModel);
 
-      //context.go('/home');
+      context.go('/home');
       const SnackBar(content: Text('Melding gemaakt'));
     } catch(e) {
       const SnackBar(content: Text('Er ging iets mis'));
