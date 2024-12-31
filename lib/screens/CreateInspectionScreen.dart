@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../controllers/LoginController.dart';
+import 'package:mobile_app_development/controllers/InspectionController.dart';
+import 'package:mobile_app_development/models/InspectionModel.dart';
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
-import '../models/LoginModel.dart';
 
 class CreateInspectionScreen extends StatefulWidget {
   const CreateInspectionScreen({super.key});
@@ -20,11 +19,11 @@ class CreateInspectionScreen extends StatefulWidget {
 
 class CreateInspectionScreenState extends State<CreateInspectionScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final LoginController _controller =
-      DependencyInjection.getIt.get<LoginController>();
-  final LoginModel _loginModel = LoginModel(username: '', password: '');
+  final InspectionController _controller =
+      DependencyInjection.getIt.get<InspectionController>();
+  final InspectionModel _inspectionModel = InspectionModel(id: 0, code: "", odometer: 0, result: "", description: "", photo: "", photoContentType: "");
 
-  late File _image;
+  File? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
                   child: Column(
                     children: [
                       FormHelper.buildTextField('Bericht', (value) {
-                        _loginModel.username =
+                        _inspectionModel.description =
                             value!; // You can store the message here or use a different model
                       }),
                       SizedBox(height: 16),
@@ -83,22 +82,22 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
       _formKey.currentState!.save();
     }
 
-    var imageBytes = await _image.readAsBytes();
-    var base64Image = base64Encode(imageBytes);
+    List<int> bytes = _image?.readAsBytesSync() as List<int>;
+    //String base64Image =  "data:image/png;base64,${base64Encode(bytes)}";
+    String base64Image =  base64Encode(bytes);
 
-    print(222);
-    print(base64Image);
-    print(333);
+    try {
+      // TODO: refactor
+      _inspectionModel.photo = base64Image;
 
-    const SnackBar(content: Text('Melding gemaakt'));
-  }
+      _controller.addInspection(_inspectionModel);
 
-  _navigateIfLoggedIn() async {
-    var loggedIn = await _controller.isLoggedIn();
-
-    if (loggedIn) {
-      context.go('/home');
+      //context.go('/home');
+      const SnackBar(content: Text('Melding gemaakt'));
+    } catch(e) {
+      const SnackBar(content: Text('Er ging iets mis'));
     }
+
   }
 
   Future<void> _pickImage() async {
@@ -108,7 +107,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
       final imageTemperory = File(image.path);
       setState(() => _image = imageTemperory);
     } on PlatformException catch (e) {
-      print(" File not Picked ");
+      print("File not Picked");
     }
   }
 }

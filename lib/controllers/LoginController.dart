@@ -12,8 +12,6 @@ class LoginController {
   Future<bool> login(LoginModel loginModel) async {
     final response = await apiService.login(loginModel);
 
-    print(response.statusCode);
-
     if (response.statusCode == 200) {
       // TODO: move token logic to controller?
       final responseBody = jsonDecode(response.body);

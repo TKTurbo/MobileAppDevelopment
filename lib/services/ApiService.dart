@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:mobile_app_development/models/AccountInfoModel.dart';
+import 'package:mobile_app_development/models/InspectionModel.dart';
 import 'package:mobile_app_development/services/AuthService.dart';
 
 import '../models/ChangePasswordModel.dart';
@@ -34,6 +35,10 @@ class ApiService {
   Future<http.Response> changeAccountInfo(
           AccountInfoModel accountInfoModel) async =>
       await _post('/AM/account', accountInfoModel.toJson());
+
+  Future<http.Response> addInspection(
+      InspectionModel inspectionModel) async =>
+      await _post('/inspections', inspectionModel.toJson());
 
   Future<http.Response> register(registerModel) async =>
       await _post('/AM/register', registerModel.toJson(), includeAuth: false);
