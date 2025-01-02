@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobile_app_development/controllers/AccountController.dart';
 import 'package:mobile_app_development/controllers/ChangePasswordController.dart';
+import 'package:mobile_app_development/controllers/InspectionController.dart';
 import 'package:mobile_app_development/controllers/LoginController.dart';
 import 'package:mobile_app_development/controllers/RegisterController.dart';
 import 'package:mobile_app_development/controllers/RentalController.dart';
@@ -21,5 +22,6 @@ class DependencyInjection {
     getIt.registerSingleton<RegisterController>(RegisterController());
     getIt.registerSingleton<RentalController>(RentalController());
     getIt.registerSingleton<AccountController>(AccountController());
+    getIt.registerSingleton<InspectionController>(InspectionController());
   }
 }

@@ -32,7 +32,6 @@ class CustomerModel {
   }
 
   static CustomerModel fromJson(data) {
-
     return CustomerModel(
         id: data['id'],
         nr: data['nr'],
