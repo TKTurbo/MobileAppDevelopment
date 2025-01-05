@@ -12,9 +12,12 @@ import 'package:mobile_app_development/screens/HomeScreen.dart';
 import 'package:mobile_app_development/screens/LoginScreen.dart';
 import 'package:mobile_app_development/screens/RegisterScreen.dart';
 import 'package:mobile_app_development/screens/RentalScreen.dart';
+import 'package:mobile_app_development/services/AuthService.dart';
 import 'package:mobile_app_development/services/NotificationService.dart';
 
 import 'DependencyInjection.dart';
+
+final authService = DependencyInjection.getIt.get<AuthService>();
 
 // GoRouter configuration
 final _router = GoRouter(
@@ -22,9 +25,8 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      redirect: (BuildContext context, GoRouterState state) {
-        if (false) {
-          // TODO: Get logged in status and route to home or login
+      redirect: (BuildContext context, GoRouterState state) async {
+        if (await authService.isLoggedIn()) {
           return '/home';
         } else {
           return '/login';
@@ -80,8 +82,8 @@ final _router = GoRouter(
     GoRoute(
       name: 'rental_details',
       path: '/rentals/:rentalId',
-      builder: (context, state) =>
-          RentalDetailScreen(rentalId: int.parse(state.pathParameters['rentalId']!)),
+      builder: (context, state) => RentalDetailScreen(
+          rentalId: int.parse(state.pathParameters['rentalId']!)),
     ),
     GoRoute(
       name: 'rental_history',
@@ -99,7 +101,8 @@ final _router = GoRouter(
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection.configure();
-  final notificationService = DependencyInjection.getIt.get<NotificationService>();
+  final notificationService =
+      DependencyInjection.getIt.get<NotificationService>();
   notificationService.init();
   runApp(const MyApp());
 }
