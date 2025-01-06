@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 
 import '../controllers/RentalController.dart';
 import '../DependencyInjection.dart';
+import '../helpers/LocationHelper.dart';
 import '../models/CarModel.dart';
 import '../widgets/CarDetailCard.dart';
 
@@ -34,34 +33,8 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     setUserLocation();
   }
 
-  // TODO: move when re-used
-  // TODO: location could be fixed in search screen, and should be stored to prevent constant access
-  Future<Position> determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    return await Geolocator.getCurrentPosition();
-  }
-
   Future<void> setUserLocation() async {
-    Position position = await determinePosition();
+    Position position = await LocationHelper.determinePosition();
 
     setState(() {
       userLocation = LatLng(position.latitude, position.longitude);
@@ -76,7 +49,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       builder: (BuildContext context, AsyncSnapshot<CarModel?> snapshot) {
         if (snapshot.hasData) {
           final car = snapshot.data;
-          var carLocation = LatLng(car!.latitude, car.longitude);
+          var carLocation = car!.getLatLng();
 
           return Scaffold(
               appBar: AppBar(

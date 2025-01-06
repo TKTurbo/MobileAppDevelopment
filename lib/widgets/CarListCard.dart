@@ -1,16 +1,24 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:mobile_app_development/helpers/LocationHelper.dart';
+
+import '../models/CarModel.dart';
 
 class CarListCard extends StatelessWidget {
-  final dynamic car; // TODO: should not be dynamic
+  final CarModel car;
+  final LatLng userLocation; // TODO: should not be dynamic
 
-  const CarListCard({super.key, required this.car});
+  const CarListCard(
+      {super.key, required CarModel this.car, required this.userLocation});
 
   @override
   Widget build(BuildContext context) {
     var imageBlob = car.picture;
     var image = const Base64Codec().decode(imageBlob);
+    var distance =
+        LocationHelper.calculateDistance(userLocation, car.getLatLng());
 
     return Container(
       margin: const EdgeInsets.only(top: 1),
@@ -37,9 +45,9 @@ class CarListCard extends StatelessWidget {
                               style: const TextStyle(fontSize: 25),
                             ),
                             Text(
-                              "€ ${car.price}",
+                              "€ ${car.price} | $distance km hier vandaan",
                               style: const TextStyle(fontSize: 15),
-                            ),
+                            )
                           ],
                         ),
                       ),

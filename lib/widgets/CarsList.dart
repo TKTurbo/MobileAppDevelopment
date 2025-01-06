@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mobile_app_development/controllers/RentalController.dart';
 
 import '../DependencyInjection.dart';
+import '../helpers/LocationHelper.dart';
 import '../models/CarModel.dart';
 import 'CarListCard.dart';
 
@@ -17,11 +20,23 @@ class _CarsListState extends State<CarsList> {
       DependencyInjection.getIt.get<RentalController>();
   var _carList = [];
   var staticCarList = [];
+  late LatLng userLocation;
+  var userLocationLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    _fetchCars();
+    fetchCars();
+    setUserLocation();
+  }
+
+  Future<void> setUserLocation() async {
+    Position position = await LocationHelper.determinePosition();
+
+    setState(() {
+      userLocation = LatLng(position.latitude, position.longitude);
+      userLocationLoaded = true;
+    });
   }
 
   @override
@@ -32,7 +47,7 @@ class _CarsListState extends State<CarsList> {
           child: Column(
             children: [
               const Center(
-                child: const Text(
+                child: Text(
                   "Auto's in de buurt",
                   style: TextStyle(fontSize: 50, color: Color(0xFFFFFFFF)),
                 ),
@@ -70,22 +85,22 @@ class _CarsListState extends State<CarsList> {
               ),
               const SizedBox(height: 16),
               Expanded(
-                child: _carList.isNotEmpty
+                child: _carList.isNotEmpty && userLocationLoaded
                     ? ListView.builder(
                         itemCount: _carList.length,
                         itemBuilder: (context, index) {
                           var car = _carList[index];
-                          return CarListCard(car: car);
+                          return CarListCard(car: car, userLocation: userLocation);
                         },
                       )
-                    : const Text("Geen auto's gevonden"),
+                    : const Center(child: CircularProgressIndicator())
               ),
             ],
           )),
     );
   }
 
-  void _fetchCars() async {
+  void fetchCars() async {
     try {
       final carList = await controller.getAllCars();
       setState(() {

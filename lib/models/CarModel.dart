@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:latlong2/latlong.dart';
+
 class CarModel {
   int id;
   String brand;
@@ -68,5 +70,9 @@ class CarModel {
         body: car['body'],
         longitude: car['longitude'],
         latitude: car['latitude']);
+  }
+
+  LatLng getLatLng() {
+    return LatLng(latitude, longitude);
   }
 }

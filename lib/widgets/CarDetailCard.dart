@@ -3,23 +3,23 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mobile_app_development/helpers/LocationHelper.dart';
+import 'package:mobile_app_development/models/CarModel.dart';
 
 class CarDetailCard extends StatelessWidget {
-  final dynamic car;
+  final CarModel car;
 
   final LatLng? userLocation;
 
   const CarDetailCard(
-      {super.key, required this.car, LatLng? this.userLocation});
+      {super.key, required this.car, this.userLocation});
 
   @override
   Widget build(BuildContext context) {
     var imageBlob = car.picture;
     var image = const Base64Codec().decode(imageBlob);
 
-    var carLocation = LatLng(car.latitude, car.longitude);
     var distanceFromCar =
-        LocationHelper.calculateDistance(userLocation!, carLocation);
+        LocationHelper.calculateDistance(userLocation!, car.getLatLng());
 
     return Card(
       child: SizedBox(
@@ -33,7 +33,7 @@ class CarDetailCard extends StatelessWidget {
               style: const TextStyle(fontSize: 24),
             ),
             Text(
-              "$distanceFromCar km van mij weg",
+              "$distanceFromCar km van mij vandaan",
               style: const TextStyle(fontSize: 16),
             ),
             SizedBox(

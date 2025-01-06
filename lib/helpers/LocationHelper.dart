@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 class LocationHelper {
@@ -19,4 +20,35 @@ class LocationHelper {
     double distance = radius * c;
     return double.parse(distance.toStringAsFixed(3)); // Limit to 3 decimals
   }
+
+  // TODO: Only retrieve occasional updates and cache
+  // TODO: If it takes too long, or we are denied, we should correctly handle it
+  static Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied.');
+    }
+
+    Position? lastKnownPosition = await Geolocator.getLastKnownPosition();
+    if (lastKnownPosition != null) {
+      return lastKnownPosition;
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
 }
