@@ -12,8 +12,8 @@ class CarModel {
   int modelYear;
   String since;
   String body;
-  String longitude;
-  String latitude;
+  double longitude;
+  double latitude;
 
   CarModel({
     required this.id,
@@ -62,8 +62,8 @@ class CarModel {
       modelYear: car['modelYear'],
       since: car['since'],
       body: car['body'],
-      longitude: car['longitude'].toString(),
-      latitude: car['latitude'].toString(),
+      longitude: car['longitude'],
+      latitude: car['latitude']
     );
   }
 
