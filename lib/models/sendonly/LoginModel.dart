@@ -11,6 +11,7 @@ class LoginModel {
   });
 
   String toJson() {
-    return jsonEncode({'username': username, 'password': password, 'rememberMe': rememberMe});
+    return jsonEncode(
+        {'username': username, 'password': password, 'rememberMe': rememberMe});
   }
 }

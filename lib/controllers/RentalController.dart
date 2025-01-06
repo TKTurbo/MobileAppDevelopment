@@ -10,7 +10,8 @@ import '../services/NotificationService.dart';
 
 class RentalController {
   final ApiService apiService = DependencyInjection.getIt.get<ApiService>();
-  final NotificationService notificationService = DependencyInjection.getIt.get<NotificationService>();
+  final NotificationService notificationService =
+      DependencyInjection.getIt.get<NotificationService>();
 
   Future<List<CarModel>> getAllCars() async {
     final response = await apiService.getAllCars();
@@ -48,7 +49,7 @@ class RentalController {
     final formatter = DateFormat("yyyy-MM-dd");
     final rental = RentalModel(
       id: null,
-      code: Uuid().v4(),
+      code: const Uuid().v4(),
       longitude: car.longitude,
       latitude: car.latitude,
       fromDate: formatter.format(from),
@@ -67,7 +68,6 @@ class RentalController {
       return true;
     }
 
-
     return false;
   }
 
@@ -83,7 +83,7 @@ class RentalController {
       if (customer.rentals != null) {
         for (var i = 0; i < customer.rentals.length; i++) {
           RentalModel rental = RentalModel.fromJson(customer.rentals[i]);
-           customerRentals.add(rental);
+          customerRentals.add(rental);
         }
       }
 
@@ -104,10 +104,11 @@ class RentalController {
       List<RentalModel> customerRentals = [];
       if (customer.rentals != null) {
         for (var i = 0; i < customer.rentals.length; i++) {
-          if (customer.rentals[i]['state'] == 'RESERVED' || customer.rentals[i]['state'] == 'ACTIVE') {
-              RentalModel rental = RentalModel.fromJson(customer.rentals[i]);
-              customerRentals.add(rental);
-            }
+          if (customer.rentals[i]['state'] == 'RESERVED' ||
+              customer.rentals[i]['state'] == 'ACTIVE') {
+            RentalModel rental = RentalModel.fromJson(customer.rentals[i]);
+            customerRentals.add(rental);
+          }
         }
       }
 

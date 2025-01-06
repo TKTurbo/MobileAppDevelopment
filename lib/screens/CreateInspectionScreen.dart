@@ -21,7 +21,15 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final InspectionController _controller =
       DependencyInjection.getIt.get<InspectionController>();
-  final InspectionModel _inspectionModel = InspectionModel(id: 0, code: "", odometer: 0, result: "", description: "", photo: "", photoContentType: "", completed: DateTime.now().toUtc());
+  final InspectionModel _inspectionModel = InspectionModel(
+      id: 0,
+      code: "",
+      odometer: 0,
+      result: "",
+      description: "",
+      photo: "",
+      photoContentType: "",
+      completed: DateTime.now().toUtc());
 
   File? _image;
 
@@ -48,8 +56,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
                   child: Column(
                     children: [
                       FormHelper.buildTextField('Bericht', (value) {
-                        _inspectionModel.description =
-                            value!; // You can store the message here or use a different model
+                        _inspectionModel.description = value!;
                       }),
                       SizedBox(height: 16),
                       _image == null
@@ -83,8 +90,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
     }
 
     List<int> bytes = _image?.readAsBytesSync() as List<int>;
-    //String base64Image =  "data:image/png;base64,${base64Encode(bytes)}";
-    String base64Image =  base64Encode(bytes);
+    String base64Image = base64Encode(bytes);
 
     try {
       // TODO: refactor
@@ -94,18 +100,17 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
 
       context.go('/home');
       const SnackBar(content: Text('Melding gemaakt'));
-    } catch(e) {
+    } catch (e) {
       const SnackBar(content: Text('Er ging iets mis'));
     }
-
   }
 
   Future<void> _pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
-      final imageTemperory = File(image.path);
-      setState(() => _image = imageTemperory);
+      final imageTemporary = File(image.path);
+      setState(() => _image = imageTemporary);
     } on PlatformException catch (e) {
       print("File not Picked");
     }

@@ -1,16 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter_offline/flutter_offline.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_app_development/models/AccountInfoModel.dart';
 import 'package:mobile_app_development/models/InspectionModel.dart';
 import 'package:mobile_app_development/services/AuthService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/ChangePasswordModel.dart';
 import '../models/RentalModel.dart';
 
 import '../DependencyInjection.dart';
+import '../models/sendonly/ChangePasswordModel.dart';
 
 class ApiService {
   final _authService = DependencyInjection.getIt.get<AuthService>();

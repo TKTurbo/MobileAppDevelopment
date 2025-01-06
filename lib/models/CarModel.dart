@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:latlong2/latlong.dart';
+
 class CarModel {
   int id;
   String brand;
@@ -11,6 +13,7 @@ class CarModel {
   int engineSize;
   int modelYear;
   String since;
+  double price;
   String body;
   double longitude;
   double latitude;
@@ -26,6 +29,7 @@ class CarModel {
     required this.engineSize,
     required this.modelYear,
     required this.since,
+    required this.price,
     required this.body,
     required this.longitude,
     required this.latitude,
@@ -43,6 +47,7 @@ class CarModel {
       'engineSize': engineSize,
       'modelYear': modelYear,
       'since': since,
+      'price': price,
       'body': body,
       'longitude': longitude,
       'latitude': latitude,
@@ -51,21 +56,23 @@ class CarModel {
 
   static fromJson(car) {
     return CarModel(
-      id: car['id'],
-      brand: car['brand'],
-      model: car['model'],
-      picture: car['picture'],
-      fuel: car['fuel'],
-      options: car['options'],
-      licensePlate: car['licensePlate'],
-      engineSize: car['engineSize'],
-      modelYear: car['modelYear'],
-      since: car['since'],
-      body: car['body'],
-      longitude: car['longitude'],
-      latitude: car['latitude']
-    );
+        id: car['id'],
+        brand: car['brand'],
+        model: car['model'],
+        picture: car['picture'],
+        fuel: car['fuel'],
+        options: car['options'],
+        licensePlate: car['licensePlate'],
+        engineSize: car['engineSize'],
+        modelYear: car['modelYear'],
+        since: car['since'],
+        price: car['price'],
+        body: car['body'],
+        longitude: car['longitude'],
+        latitude: car['latitude']);
   }
 
-
+  LatLng getLatLng() {
+    return LatLng(latitude, longitude);
+  }
 }

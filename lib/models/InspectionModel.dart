@@ -22,7 +22,7 @@ class InspectionModel {
     required this.completed,
   });
 
-  factory InspectionModel.fromJson(Map<String, dynamic> json) {
+  static InspectionModel fromJson(Map<String, dynamic> json) {
     return InspectionModel(
       id: json['id'],
       code: json['code'],
@@ -47,5 +47,4 @@ class InspectionModel {
       'completed': completed.toIso8601String(),
     });
   }
-
 }

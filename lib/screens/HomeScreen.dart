@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app_development/screens/SearchScreen.dart';
+import 'package:mobile_app_development/widgets/CarsList.dart';
 
-import '../widgets/mainbottomnavigation.dart';
+import '../widgets/MainBottomNavigation.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: const Center(
-        child: SearchScreen(),
+    return const Scaffold(
+      body: Center(
+        child: CarsList(),
       ),
-      bottomNavigationBar: const MainBottomNavigation(
+      bottomNavigationBar: MainBottomNavigation(
         initialIndex: 0,
       ),
     );

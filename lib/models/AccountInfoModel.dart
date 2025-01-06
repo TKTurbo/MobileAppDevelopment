@@ -19,15 +19,15 @@ class AccountInfoModel {
     required this.langKey,
   });
 
-  factory AccountInfoModel.fromJson(json) {
+  static fromJson(accountInfo) {
     return AccountInfoModel(
-      id: json['id'],
-      login: json['login'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      email: json['email'],
-      imageUrl: json['imageUrl'],
-      langKey: json['langKey'],
+      id: accountInfo['id'],
+      login: accountInfo['login'],
+      firstName: accountInfo['firstName'],
+      lastName: accountInfo['lastName'],
+      email: accountInfo['email'],
+      imageUrl: accountInfo['imageUrl'],
+      langKey: accountInfo['langKey'],
     );
   }
 
