@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_app_development/services/AuthService.dart';
 
 import '../controllers/LoginController.dart';
 import '../DependencyInjection.dart';
@@ -91,7 +90,7 @@ class LoginState extends State<LoginScreen> {
   _navigateIfLoggedIn() async {
     var loggedIn = await _controller.isLoggedIn();
 
-    if(loggedIn) {
+    if (loggedIn) {
       context.go('/home');
     }
   }

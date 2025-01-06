@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app_development/screens/AccountScreen.dart';
 import 'package:mobile_app_development/screens/ChangeAccountInfoScreen.dart';
@@ -12,9 +13,12 @@ import 'package:mobile_app_development/screens/HomeScreen.dart';
 import 'package:mobile_app_development/screens/LoginScreen.dart';
 import 'package:mobile_app_development/screens/RegisterScreen.dart';
 import 'package:mobile_app_development/screens/RentalScreen.dart';
+import 'package:mobile_app_development/services/AuthService.dart';
 import 'package:mobile_app_development/services/NotificationService.dart';
 
 import 'DependencyInjection.dart';
+
+final authService = DependencyInjection.getIt.get<AuthService>();
 
 // GoRouter configuration
 final _router = GoRouter(
@@ -22,9 +26,8 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      redirect: (BuildContext context, GoRouterState state) {
-        if (false) {
-          // TODO: Get logged in status and route to home or login
+      redirect: (BuildContext context, GoRouterState state) async {
+        if (await authService.isLoggedIn()) {
           return '/home';
         } else {
           return '/login';
@@ -80,8 +83,8 @@ final _router = GoRouter(
     GoRoute(
       name: 'rental_details',
       path: '/rentals/:rentalId',
-      builder: (context, state) =>
-          RentalDetailScreen(rentalId: int.parse(state.pathParameters['rentalId']!)),
+      builder: (context, state) => RentalDetailScreen(
+          rentalId: int.parse(state.pathParameters['rentalId']!)),
     ),
     GoRoute(
       name: 'rental_history',
@@ -99,7 +102,8 @@ final _router = GoRouter(
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection.configure();
-  final notificationService = DependencyInjection.getIt.get<NotificationService>();
+  final notificationService =
+      DependencyInjection.getIt.get<NotificationService>();
   notificationService.init();
   runApp(const MyApp());
 }
@@ -109,11 +113,47 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: _router,
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        scaffoldBackgroundColor: const Color(0xFF6F82F8),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: OfflineBuilder(
+        connectivityBuilder: (
+          BuildContext context,
+          List<ConnectivityResult> connectivity,
+          Widget child,
+        ) {
+          final bool connected =
+              !connectivity.contains(ConnectivityResult.none);
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              MaterialApp.router(
+                routerConfig: _router,
+                theme: ThemeData(
+                  primarySwatch: Colors.indigo,
+                  scaffoldBackgroundColor: const Color(0xFF6F82F8),
+                ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).padding.top,
+                left: 0.0,
+                right: 0.0,
+                height: 24.0,
+                child: connected
+                    ? const SizedBox.shrink()
+                    : Container(
+                        color: const Color(0xFFEE4400),
+                        child: const Center(
+                          child: Text(
+                            'Offline',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+              ),
+            ],
+          );
+        },
+        child: const SizedBox.shrink(),
       ),
     );
   }
