@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import '../controllers/RentalController.dart';
 import '../DependencyInjection.dart';
-import '../models/CarModel.dart';
 import '../models/RentalModel.dart';
 
 class RentalDetailScreen extends StatefulWidget {
@@ -27,19 +26,28 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
           if (snapshot.hasData) {
             final rental = snapshot.data;
             return Scaffold(
-                body: Center(
-                    child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton(
-                  onPressed: () => context.go('/createinspectionscreen'),
-                  child: const Text('Melding maken'),
+              appBar: AppBar(
+                title: const Text('Rental Details'),
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => context.go('/rentals'),
                 ),
-              ],
-            )));
+              ),
+              body: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => context.go('/createinspectionscreen'),
+                      child: const Text('Melding maken'),
+                    ),
+                  ],
+                ),
+              ),
+            );
           } else {
-            print(snapshot.error);
-            return Scaffold(body: Text('Fout bij het laden van de boeking'));
+            return const Scaffold(
+                body: Text('Fout bij het laden van de boeking'));
           }
         });
   }

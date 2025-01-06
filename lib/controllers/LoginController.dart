@@ -13,7 +13,6 @@ class LoginController {
     final response = await apiService.login(loginModel);
 
     if (response.statusCode == 200) {
-      // TODO: move token logic to controller?
       final responseBody = jsonDecode(response.body);
       final token = responseBody['id_token'];
       if (token != null) {

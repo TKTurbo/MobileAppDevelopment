@@ -6,7 +6,7 @@ import 'package:mobile_app_development/models/AccountInfoModel.dart';
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
 import '../services/AuthService.dart';
-import '../widgets/mainbottomnavigation.dart';
+import '../widgets/MainBottomNavigation.dart';
 
 class ChangeAccountInfoScreen extends StatefulWidget {
   const ChangeAccountInfoScreen({super.key});

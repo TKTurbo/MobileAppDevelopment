@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/mainbottomnavigation.dart';
+import '../../widgets/MainBottomNavigation.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});

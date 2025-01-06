@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../controllers/AccountController.dart';
 import '../DependencyInjection.dart';
-import '../widgets/mainbottomnavigation.dart';
+import '../widgets/MainBottomNavigation.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});

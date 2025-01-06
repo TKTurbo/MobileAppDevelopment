@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import '../controllers/RentalController.dart';
 import '../DependencyInjection.dart';
 import '../models/CarModel.dart';
+import '../widgets/CarDetailCard.dart';
 
 class CarDetailsScreen extends StatefulWidget {
   final int carId;
@@ -25,7 +26,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   DateTime selectedStartDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
   late LatLng userLocation;
-  bool locationLoaded = false;
+  bool userLocationLoaded = false;
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   }
 
   // TODO: move when re-used
+  // TODO: location could be fixed in search screen, and should be stored to prevent constant access
   Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -63,7 +65,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
 
     setState(() {
       userLocation = LatLng(position.latitude, position.longitude);
-      locationLoaded = true;  // Mark as loaded
+      userLocationLoaded = true; // Mark as loaded
     });
   }
 
@@ -74,149 +76,136 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       builder: (BuildContext context, AsyncSnapshot<CarModel?> snapshot) {
         if (snapshot.hasData) {
           final car = snapshot.data;
-          var imageBlob = car?.picture;
-          var image = Base64Codec().decode(imageBlob!);
           var carLocation = LatLng(car!.latitude, car.longitude);
 
           return Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () => context.go('/home'),
-                color: const Color(0xFF6F82F8),
-              ),
-            ),
-            body: Column(
-              children: [
-                // FlutterMap widget
-                SizedBox(
-                  height: 250, // Adjust the height as needed
-                  child: !locationLoaded ? const Center(child: CircularProgressIndicator()) : FlutterMap(
-                    options: MapOptions(
-                      initialCenter: LatLng(car!.latitude, car.longitude),
-                      initialZoom: 16,
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        userAgentPackageName: 'com.example.app',
-                      ),
-                      MarkerLayer(
-                        markers: [
-                          Marker(
-                            point: carLocation,
-                            width: 50,
-                            height: 50,
-                            child: GestureDetector(
-                              child: const Icon(
-                                Icons.car_rental,
-                                color: Color(0xFF6F82F8),
-                                size: 50.0,
-                              ),
-                            ),
-                          ),
-                          Marker(
-                            point: userLocation,
-                            width: 50,
-                            height: 50,
-                            child: const Icon(
-                              Icons.person,
-                              color: Colors.red,
-                              size: 50.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                      PolylineLayer(
-                        polylines: [
-                          Polyline(
-                            points: [
-                              userLocation,
-                              carLocation,
-                            ],
-                            strokeWidth: 4.0,
-                            color: Colors.black,
-                            pattern: StrokePattern.dashed(segments: const [20, 20]),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+              appBar: AppBar(
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => context.go('/home'),
+                  color: const Color(0xFF6F82F8),
                 ),
-                Expanded(
-                  child: Center(
-                    child: Card(
-                      child: SizedBox(
-                        height: 450,
-                        width: 370,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              body: !userLocationLoaded
+                  ? const Center(child: CircularProgressIndicator())
+                  : Stack(
+                      children: [
+                        Column(
                           children: [
-                            Text(
-                              "${car!.brand} ${car.model}",
-                              style: TextStyle(fontSize: 24),
-                            ),
                             SizedBox(
-                              width: 300,
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Image.memory(image),
+                              height: 250,
+                              child: FlutterMap(
+                                options: MapOptions(
+                                  initialCenter: carLocation,
+                                  initialZoom: 16,
+                                ),
+                                children: [
+                                  TileLayer(
+                                    urlTemplate:
+                                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                    userAgentPackageName: 'com.example.app',
+                                  ),
+                                  MarkerLayer(
+                                    markers: [
+                                      Marker(
+                                        point: carLocation,
+                                        width: 50,
+                                        height: 50,
+                                        child: GestureDetector(
+                                          child: const Icon(
+                                            Icons.car_rental,
+                                            color: Color(0xFF6F82F8),
+                                            size: 50.0,
+                                          ),
+                                        ),
+                                      ),
+                                      Marker(
+                                        point: userLocation,
+                                        width: 50,
+                                        height: 50,
+                                        child: const Icon(
+                                          Icons.person,
+                                          color: Colors.red,
+                                          size: 50.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  PolylineLayer(
+                                    polylines: [
+                                      Polyline(
+                                        points: [
+                                          userLocation,
+                                          carLocation,
+                                        ],
+                                        strokeWidth: 4.0,
+                                        color: Colors.black,
+                                        pattern: StrokePattern.dashed(
+                                            segments: const [20, 20]),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                            Text(
-                              "Kenteken: ${car.licensePlate}\n"
-                              "Type brandstof: ${car.fuel}\n",
-                            ),
-                            FloatingActionButton(
-                              child: Text('Huren'),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text(
-                                          'Kies start- en einddatum'),
-                                      content: Column(
-                                        children: [
-                                          FloatingActionButton(
-                                            child: const Text("Startdatum kiezen"),
-                                            onPressed: () => _selectStartDate(),
-                                          ),
-                                          FloatingActionButton(
-                                            child: const Text("Einddatum kiezen"),
-                                            onPressed: () => _selectEndDate(),
-                                          ),
-                                        ],
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(),
-                                          child: const Text('Annuleren'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => _confirmRental(
-                                            car,
-                                            selectedStartDate,
-                                            selectedEndDate,
-                                          ),
-                                          child: Text('Huren'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
+                            Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20),
+                                child: CarDetailCard(
+                                    car: car, userLocation: userLocation),
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+                        Positioned(
+                          bottom: 50,
+                          left: MediaQuery.of(context).size.width / 2 - 28,
+                          child: FloatingActionButton(
+                            child: const Text('Huren'),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title:
+                                        const Text('Kies start- en einddatum'),
+                                    content: Column(
+                                      children: [
+                                        FloatingActionButton(
+                                          child:
+                                              const Text("Startdatum kiezen"),
+                                          onPressed: () => _selectStartDate(),
+                                        ),
+                                        FloatingActionButton(
+                                          child: const Text("Einddatum kiezen"),
+                                          onPressed: () => _selectEndDate(),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                        child: const Text('Annuleren'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => _confirmRental(
+                                          car,
+                                          selectedStartDate,
+                                          selectedEndDate,
+                                        ),
+                                        child: const Text('Huren'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ));
         } else {
           print(snapshot.error);
           return Scaffold(body: Text('Fout bij het laden van de auto'));
