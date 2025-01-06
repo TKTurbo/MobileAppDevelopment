@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app_development/controllers/ChangePasswordController.dart';
-import 'package:mobile_app_development/models/ChangePasswordModel.dart';
-
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
+import '../models/sendonly/ChangePasswordModel.dart';
 import '../services/AuthService.dart';
 import '../widgets/MainBottomNavigation.dart';
 
@@ -80,11 +79,14 @@ class ChangePasswordState extends State<ChangePasswordScreen> {
       _authService.clearToken();
       context.go('/login');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Wachtwoord veranderd. Log A.u.b. opnieuw in.')),
+        const SnackBar(
+            content: Text('Wachtwoord veranderd. Log A.u.b. opnieuw in.')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Kon wachtwoord niet veranderen. Zorg dat het huidige wachtwoord klopt en het nieuwe wachtwoord voldoende lang is.')),
+        const SnackBar(
+            content: Text(
+                'Kon wachtwoord niet veranderen. Zorg dat het huidige wachtwoord klopt en het nieuwe wachtwoord voldoende lang is.')),
       );
     }
   }

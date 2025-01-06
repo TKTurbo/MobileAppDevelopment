@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:mobile_app_development/services/ApiService.dart';
 import '../DependencyInjection.dart';
-import '../models/RegisterModel.dart';
+import '../models/sendonly/RegisterModel.dart';
 import '../services/AuthService.dart';
 
 class RegisterController {

@@ -30,10 +30,15 @@ class CarListCard extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         margin: const EdgeInsets.only(top: 5, left: 5),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "${car.brand} ${car.model}",
                               style: const TextStyle(fontSize: 25),
+                            ),
+                            Text(
+                              "€ ${car.price}",
+                              style: const TextStyle(fontSize: 15),
                             ),
                           ],
                         ),

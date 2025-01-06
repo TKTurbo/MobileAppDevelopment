@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../controllers/LoginController.dart';
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
-import '../models/LoginModel.dart';
+import '../models/sendonly/LoginModel.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

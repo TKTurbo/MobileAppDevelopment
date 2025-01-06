@@ -9,15 +9,14 @@ class CustomerModel {
   dynamic systemUser;
   dynamic rentals;
 
-  CustomerModel({
-    required this.id,
-    required this.nr,
-    required this.lastName,
-    required this.firstName,
-    required this.from,
-    required this.systemUser,
-    required this.rentals
-  });
+  CustomerModel(
+      {required this.id,
+      required this.nr,
+      required this.lastName,
+      required this.firstName,
+      required this.from,
+      required this.systemUser,
+      required this.rentals});
 
   String toJson() {
     return jsonEncode({
@@ -31,7 +30,7 @@ class CustomerModel {
     });
   }
 
-  static CustomerModel fromJson(data) {
+  static CustomerModel fromJson(Map<String, dynamic> data) {
     return CustomerModel(
         id: data['id'],
         nr: data['nr'],
