@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app_development/screens/AccountScreen.dart';
 import 'package:mobile_app_development/screens/ChangeAccountInfoScreen.dart';
 import 'package:mobile_app_development/screens/ChangePasswordScreen.dart';
+import 'package:mobile_app_development/screens/ContactScreen.dart';
 import 'package:mobile_app_development/screens/CreateInspectionScreen.dart';
+import 'package:mobile_app_development/screens/FaqScreen.dart';
 import 'package:mobile_app_development/screens/RentalDetailScreen.dart';
 import 'package:mobile_app_development/screens/RentalHistoryScreen.dart';
 import 'package:mobile_app_development/screens/SearchScreen.dart';
@@ -95,6 +97,16 @@ final _router = GoRouter(
       name: 'create_inspection_screen',
       path: '/createinspectionscreen',
       builder: (context, state) => const CreateInspectionScreen(),
+    ),
+    GoRoute(
+      name: 'faq',
+      path: '/faq',
+      builder: (context, state) => const FaqScreen(),
+    ),
+    GoRoute(
+      name: 'contact',
+      path: '/contact',
+      builder: (context, state) => const ContactScreen(),
     ),
   ],
 );
