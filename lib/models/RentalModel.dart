@@ -3,8 +3,8 @@ import 'dart:convert';
 class RentalModel {
   int? id;
   String code;
-  String longitude;
-  String latitude;
+  double longitude;
+  double latitude;
   String fromDate;
   String toDate;
   String state;
@@ -44,8 +44,8 @@ class RentalModel {
     return RentalModel(
       id: rental['id'],
       code: rental['code'],
-      longitude: rental['longitude'].toString(),
-      latitude: rental['latitude'].toString(),
+      longitude: rental['longitude'],
+      latitude: rental['latitude'],
       fromDate: rental['fromDate'],
       toDate: rental['toDate'],
       state: rental['state'],
