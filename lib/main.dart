@@ -144,7 +144,7 @@ class MyApp extends StatelessWidget {
                         color: const Color(0xFFEE4400),
                         child: const Center(
                           child: Text(
-                            'OFFLINE',
+                            'Offline',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
