@@ -31,7 +31,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
       description: "",
       photo: "",
       photoContentType: "",
-      completed: DateTime.now().toUtc()); // TODO: should be null
+      completed: null); // DateTime.now().toUtc());
 
   File? _image;
 

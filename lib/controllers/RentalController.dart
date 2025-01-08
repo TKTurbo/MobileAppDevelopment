@@ -60,7 +60,6 @@ class RentalController {
       car: car.toJson(),
     );
 
-    // TODO uitgecomment om push berichten te testen
     var response = await apiService.rentCar(rental);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
