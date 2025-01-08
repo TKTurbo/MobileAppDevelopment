@@ -151,7 +151,6 @@ class RentalController {
   Future<bool> removeRental(int rentalId) async {
     final response = await apiService.removeRental(rentalId);
 
-    // TODO: use this everywhere
     return response.isSuccessful();
   }
 
