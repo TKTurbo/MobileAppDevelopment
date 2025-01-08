@@ -57,7 +57,7 @@ class RentalController {
       state: "RESERVED",
       inspections: null,
       customer: customer.toJson(),
-      car: car.toJson(),
+      car: car,
     );
 
     var response = await apiService.rentCar(rental);

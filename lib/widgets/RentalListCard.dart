@@ -37,7 +37,7 @@ class RentalListCard extends StatelessWidget {
                           Text(
                             "Status: ${rental.state}",
                             style: const TextStyle(fontSize: 20),
-                          ),
+                          )
                         ],
                       ),
                     ),

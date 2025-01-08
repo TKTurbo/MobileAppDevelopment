@@ -37,9 +37,23 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Text(
+                      "${rental?.car['brand']} ${rental?.car['model']} ${rental?.car['licensePlate']}\n",
+                      style: const TextStyle(fontSize: 28, color: Colors.white),
+                    ),
+                    Text(
+                      "Kenmerk: ${rental?.code}\n",
+                      style: const TextStyle(fontSize: 20, color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
                     ElevatedButton(
-                      onPressed: () => context.go('/create_inspection/${rental!.code}'),
+                      onPressed: () =>
+                          context.go('/create_inspection/${rental?.id}'),
                       child: const Text('Melding maken'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => print('todo'), // TODO: show inspections
+                      child: const Text('Bekijk meldingen'),
                     ),
                   ],
                 ),

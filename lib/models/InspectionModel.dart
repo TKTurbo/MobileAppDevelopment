@@ -9,6 +9,7 @@ class InspectionModel {
   String photo;
   String photoContentType;
   DateTime? completed;
+  int? rentalId;
 
   InspectionModel({
     required this.id,
@@ -44,6 +45,7 @@ class InspectionModel {
       'photo': photo,
       'photoContentType': photoContentType,
       'completed': completed?.toIso8601String(),
+      'rental': {'id': rentalId}
     });
   }
 }

@@ -97,8 +97,8 @@ final _router = GoRouter(
     ),
     GoRoute(
       name: 'create_inspection',
-      path: '/create_inspection/:rentalCode',
-      builder: (context, state) => CreateInspectionScreen(rentalCode: state.pathParameters['rentalCode']!),
+      path: '/create_inspection/:rentalId',
+      builder: (context, state) => CreateInspectionScreen(rentalId: int.parse(state.pathParameters['rentalId']!)),
     ),
     GoRoute(
       name: 'faq',

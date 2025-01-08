@@ -8,7 +8,8 @@ class RentalModel {
   String fromDate;
   String toDate;
   String state;
-  dynamic inspections;
+  // TODO: check if we can make the corresponding models for these
+  dynamic inspections; // is always null, can be ignored
   dynamic customer;
   dynamic car;
 

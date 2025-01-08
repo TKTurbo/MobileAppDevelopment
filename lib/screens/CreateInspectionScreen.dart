@@ -11,9 +11,9 @@ import '../helpers/FormHelper.dart';
 import '../helpers/RouteHelper.dart';
 
 class CreateInspectionScreen extends StatefulWidget {
-  final String rentalCode;
+  final int rentalId;
 
-  const CreateInspectionScreen({super.key, required this.rentalCode});
+  const CreateInspectionScreen({super.key, required this.rentalId});
 
   @override
   CreateInspectionScreenState createState() => CreateInspectionScreenState();
@@ -96,7 +96,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
 
     try {
       // TODO: refactor, naar controller
-      _inspectionModel.code = widget.rentalCode;
+      _inspectionModel.rentalId = widget.rentalId;
       _inspectionModel.photo = base64Image;
       var isSuccess = await _controller.addInspection(_inspectionModel);
 
