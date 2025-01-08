@@ -121,7 +121,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
       if (image == null) return;
       final imageTemporary = File(image.path);
       setState(() => _image = imageTemporary);
-    } on PlatformException catch (e) {
+    } on PlatformException {
       print("File not Picked");
     }
   }
