@@ -8,7 +8,7 @@ import '../models/CarModel.dart';
 
 class CarListCard extends StatelessWidget {
   final CarModel car;
-  final LatLng userLocation; // TODO: should not be dynamic
+  final LatLng userLocation;
 
   const CarListCard(
       {super.key, required CarModel this.car, required this.userLocation});

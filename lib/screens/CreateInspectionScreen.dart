@@ -11,9 +11,9 @@ import '../helpers/FormHelper.dart';
 import '../helpers/RouteHelper.dart';
 
 class CreateInspectionScreen extends StatefulWidget {
-  final String rentalCode;
+  final int rentalId;
 
-  const CreateInspectionScreen({super.key, required this.rentalCode});
+  const CreateInspectionScreen({super.key, required this.rentalId});
 
   @override
   CreateInspectionScreenState createState() => CreateInspectionScreenState();
@@ -31,7 +31,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
       description: "",
       photo: "",
       photoContentType: "",
-      completed: DateTime.now().toUtc()); // TODO: should be null
+      completed: null); // DateTime.now().toUtc());
 
   File? _image;
 
@@ -96,18 +96,18 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
 
     try {
       // TODO: refactor, naar controller
-      _inspectionModel.code = widget.rentalCode;
+      _inspectionModel.rentalId = widget.rentalId;
       _inspectionModel.photo = base64Image;
       var isSuccess = await _controller.addInspection(_inspectionModel);
 
       if (isSuccess) {
         RouteHelper.showSnackBarAndNavigate(
             context, 'Melding gemaakt', '/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Kon geen melding maken')),
+        );
       }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Er ging iets mis')),
-      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Er ging iets mis')),
@@ -121,7 +121,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
       if (image == null) return;
       final imageTemporary = File(image.path);
       setState(() => _image = imageTemporary);
-    } on PlatformException catch (e) {
+    } on PlatformException {
       print("File not Picked");
     }
   }

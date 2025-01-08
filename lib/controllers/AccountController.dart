@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:mobile_app_development/controllers/HttpResponseExtension.dart';
 import 'package:mobile_app_development/services/ApiService.dart';
 import '../DependencyInjection.dart';
 import '../models/AccountInfoModel.dart';
@@ -26,7 +27,7 @@ class AccountController {
 
   Future<bool> changeAccountInfo(AccountInfoModel accountInfoModel) async {
     var response = await apiService.changeAccountInfo(accountInfoModel);
-    return response.statusCode >= 200 && response.statusCode < 300;
+    return response.isSuccessful();
   }
 
   Future logout() async {

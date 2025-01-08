@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:mobile_app_development/models/CarModel.dart';
+import 'package:mobile_app_development/models/CustomerModel.dart';
+
 class RentalModel {
   int? id;
   String code;
@@ -8,9 +11,11 @@ class RentalModel {
   String fromDate;
   String toDate;
   String state;
-  dynamic inspections;
-  dynamic customer;
-  dynamic car;
+
+  // TODO: check if we can make the corresponding models for these
+  dynamic inspections; // is always null, can be ignored
+  CustomerModel? customer; // these two are not always filled
+  CarModel? car;
 
   RentalModel({
     required this.id,
@@ -27,7 +32,7 @@ class RentalModel {
 
   String toJson() {
     return jsonEncode({
-//      'id': id,
+      'id': id,
       'code': code,
       'longitude': longitude,
       'latitude': latitude,
@@ -35,12 +40,12 @@ class RentalModel {
       'toDate': toDate,
       'state': state,
       'inspections': inspections,
-      'customer': json.decode(customer),
-      'car': json.decode(car),
+      'customer': {'id': customer?.id},
+      'car': {'id': car?.id},
     });
   }
 
-  static fromJson(rental) {
+  static fromJson(Map<String, dynamic> rental) {
     return RentalModel(
       id: rental['id'],
       code: rental['code'],
@@ -49,9 +54,9 @@ class RentalModel {
       fromDate: rental['fromDate'],
       toDate: rental['toDate'],
       state: rental['state'],
-      inspections: rental['inspections'],
-      customer: rental['customer'],
-      car: rental['car'],
+      inspections: rental['inspections'], // nullable
+      customer: rental['customer'] != null ? CustomerModel.fromJson(rental['customer']) : null,
+      car: rental['car'] != null ? CarModel.fromJson(rental['car']) : null,
     );
   }
 }
