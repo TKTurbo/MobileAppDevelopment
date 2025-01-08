@@ -7,6 +7,7 @@ import 'package:latlong2/latlong.dart';
 import '../controllers/RentalController.dart';
 import '../DependencyInjection.dart';
 import '../helpers/LocationHelper.dart';
+import '../helpers/RouteHelper.dart';
 import '../models/CarModel.dart';
 import '../widgets/CarDetailCard.dart';
 
@@ -211,10 +212,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     var successfullyRented =
         await _rentalController.rentCar(car, startDate, endDate);
     if (successfullyRented) {
-      context.go('/rentals');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Huren gelukt')),
-      );
+      RouteHelper.showSnackBarAndNavigate(context, 'Huren gelukt', '/rentals');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Fout bij het huren')),

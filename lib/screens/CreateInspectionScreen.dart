@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app_development/controllers/InspectionController.dart';
 import 'package:mobile_app_development/models/InspectionModel.dart';
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
+import '../helpers/RouteHelper.dart';
 
 class CreateInspectionScreen extends StatefulWidget {
   const CreateInspectionScreen({super.key});
@@ -95,11 +95,9 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
     try {
       // TODO: refactor
       _inspectionModel.photo = base64Image;
-
       _controller.addInspection(_inspectionModel);
 
-      context.go('/home');
-      const SnackBar(content: Text('Melding gemaakt'));
+      RouteHelper.showSnackBarAndNavigate(context, 'Melding gemaakt', '/home');
     } catch (e) {
       const SnackBar(content: Text('Er ging iets mis'));
     }

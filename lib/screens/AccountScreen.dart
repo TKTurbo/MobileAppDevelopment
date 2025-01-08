@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../controllers/AccountController.dart';
 import '../DependencyInjection.dart';
+import '../helpers/RouteHelper.dart';
 import '../widgets/MainBottomNavigation.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -47,7 +48,7 @@ class AccountState extends State<AccountScreen> {
             ElevatedButton(
               onPressed: () {
                 _controller.logout();
-                context.go('/login');
+                RouteHelper.showSnackBarAndNavigate(context, 'Uitgelogd', '/login');
               },
               child: const Text('Uitloggen'),
             ),
