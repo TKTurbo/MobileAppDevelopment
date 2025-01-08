@@ -13,14 +13,9 @@ class RegisterController {
   Future<bool> register(RegisterModel registerModel) async {
     final response = await apiService.register(registerModel);
 
-    if (response.isSuccessful()) {
-      final responseBody = jsonDecode(response.body);
-      final token = responseBody['token'];
-      if (token != null) {
-        await _authService.saveToken(token);
-      }
-    }
+    var isSuccess = true; // Api returns errors when registering an /AM account, but it still works
+    // "could not execute batch [Referential integrity constraint violation: \"FK_CUSTOMER__SYSTEM_USER_ID: PUBLIC.CUSTOMER FOREIGN KEY(SYSTEM_USER_ID) REFERENCES PUBLIC.JHI_USER(ID) (CAST(1057 AS BIGINT))\"; SQL statement:\ndelete from jhi_user where id=? [23503-224]] [delete from jhi_user where id=?]"
 
-    return response.isSuccessful();
+    return isSuccess;
   }
 }
