@@ -13,7 +13,8 @@ import '../models/sendonly/ChangePasswordModel.dart';
 
 class ApiService {
   final _authService = DependencyInjection.getIt.get<AuthService>();
-  final String baseUrl = 'https://mad.thomaskreder.nl/api';
+  final String baseUrl =
+      'https://mad.thomaskreder.nl/api'; // TODO: place in config or .env file
 
   Future<http.Response> getAllCars() async => await _get('/cars');
 
@@ -35,6 +36,8 @@ class ApiService {
           ChangePasswordModel changePasswordModel) async =>
       await _post('/account/change-password', changePasswordModel.toJson());
 
+  // IMPORTANT: certain API endpoints need /AM/, while others can't
+  // An example is register which needs it, but reset-password which breaks with it
   Future<http.Response> changeAccountInfo(
           AccountInfoModel accountInfoModel) async =>
       await _post('/AM/account', accountInfoModel.toJson());
@@ -48,11 +51,17 @@ class ApiService {
   Future<http.Response> login(loginModel) async =>
       await _post('/authenticate', loginModel.toJson(), includeAuth: false);
 
+  Future<http.Response> resetPassword(String email) async =>
+      await _post('/account/reset-password/init', email,
+          includeAuth: false, contentType: "text/plain");
+
   // Helper method to build full URL
   Uri _buildUri(String endpoint) => Uri.parse('$baseUrl$endpoint');
 
   // Get request
-  Future<http.Response> _get(String endpoint, {bool includeAuth = true}) async {
+  Future<http.Response> _get(String endpoint,
+      {bool includeAuth = true,
+      String contentType = 'application/json'}) async {
     var isOnline = await this.isOnline();
 
     if (!isOnline) {
@@ -60,7 +69,7 @@ class ApiService {
       return getCachedResponse(endpoint);
     }
 
-    final headers = await _getHeaders(includeAuth: includeAuth);
+    final headers = await _getHeaders(contentType, includeAuth);
     var response = await http.get(
       _buildUri(endpoint),
       headers: headers,
@@ -74,14 +83,17 @@ class ApiService {
 
   // Post request
   Future<http.Response> _post(String endpoint, String body,
-      {bool includeAuth = true}) async {
-    final headers = await _getHeaders(includeAuth: includeAuth);
+      {bool includeAuth = true,
+      String contentType = 'application/json'}) async {
+    final headers = await _getHeaders(contentType, includeAuth);
+
     return await http.post(_buildUri(endpoint), headers: headers, body: body);
   }
 
   // Get headers
-  Future<Map<String, String>> _getHeaders({bool includeAuth = true}) async {
-    final headers = {'Content-Type': 'application/json'};
+  Future<Map<String, String>> _getHeaders(
+      String contentType, includeAuth) async {
+    final headers = {'Content-Type': contentType};
     if (includeAuth) {
       final token = await _authService.getToken();
       headers['Authorization'] = 'Bearer ${token.toString()}';

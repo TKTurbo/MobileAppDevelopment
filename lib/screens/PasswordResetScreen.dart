@@ -5,22 +5,24 @@ import 'package:go_router/go_router.dart';
 
 import '../controllers/LoginController.dart';
 import '../DependencyInjection.dart';
+import '../controllers/PasswordResetController.dart';
 import '../helpers/FormHelper.dart';
 import '../helpers/RouteHelper.dart';
 import '../models/sendonly/LoginModel.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class PasswordResetScreen extends StatefulWidget {
+  const PasswordResetScreen({super.key});
 
   @override
-  LoginState createState() => LoginState();
+  PasswordResetState createState() => PasswordResetState();
 }
 
-class LoginState extends State<LoginScreen> {
+class PasswordResetState extends State<PasswordResetScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final LoginController _controller =
-      DependencyInjection.getIt.get<LoginController>();
-  final LoginModel _loginModel = LoginModel(username: '', password: '');
+  final PasswordResetController _controller =
+      DependencyInjection.getIt.get<PasswordResetController>();
+
+  String email = "";
 
   @override
   Widget build(BuildContext context) {
@@ -37,36 +39,29 @@ class LoginState extends State<LoginScreen> {
             child: Column(
               children: [
                 Text(
-                  'Inloggen',
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-                TextButton(
-                  onPressed: () => context.go('/register'),
-                  child: const Text('Nog geen account?'),
+                  'Reset wachtwoord',
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
                 Form(
                   key: _formKey,
                   child: Column(
                     children: [
-                      FormHelper.buildTextField('Gebruikersnaam', (value) {
-                        _loginModel.username = value!;
+                      FormHelper.buildTextField('Email', (value) {
+                        email = value!;
                       }),
-                      FormHelper.buildTextField('Wachtwoord', (value) {
-                        _loginModel.password = value!;
-                      }, obscureText: true),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         child: ElevatedButton(
                           onPressed: () => _handleSubmit(context),
-                          child: const Text('Inloggen'),
+                          child: const Text('Wachtwoord reset aanvragen'),
                         ),
                       ),
                     ],
                   ),
                 ),
                 TextButton(
-                  onPressed: () => context.go('/password_reset'),
-                  child: const Text('Wachtwoord vergeten?'),
+                  onPressed: () => context.go('/login'),
+                  child: const Text('Terug naar inloggen'),
                 )
               ],
             ),
@@ -81,14 +76,16 @@ class LoginState extends State<LoginScreen> {
       _formKey.currentState!.save();
     }
 
-    var loginSuccess = await _controller.login(_loginModel);
+    var resetSuccess = await _controller.resetPassword(email);
 
-    if (loginSuccess) {
+    if (resetSuccess) {
       RouteHelper.showSnackBarAndNavigate(
-          context, 'Succesvol ingelogd.', '/home');
+          context,
+          'Als dit e-mailadres bestaat krijg je een mail met een reset-link',
+          '/login');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Gebruikersnaam of wachtwoord verkeerd')),
+        const SnackBar(content: Text('Er ging iets mis')),
       );
     }
   }

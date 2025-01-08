@@ -12,8 +12,6 @@ class InspectionController {
   Future<bool> addInspection(InspectionModel inspectionModel) async {
     final response = await apiService.addInspection(inspectionModel);
 
-    print(response.body);
-
     return response.statusCode >= 200 && response.statusCode < 300;
   }
 }
