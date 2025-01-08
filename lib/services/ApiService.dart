@@ -27,6 +27,9 @@ class ApiService {
 
   Future<http.Response> getRentalCount() async => await _get('/rentals/count');
 
+  Future<http.Response> removeRental(int id) async =>
+      await _delete('/rentals/$id');
+
   Future<http.Response> getCurrentCustomer() async => await _get('/AM/me');
 
   Future<http.Response> rentCar(RentalModel rental) async =>
@@ -90,10 +93,24 @@ class ApiService {
     return await http.post(_buildUri(endpoint), headers: headers, body: body);
   }
 
+  // DELETE request
+  Future<http.Response> _delete(String endpoint,
+      {bool includeAuth = true,
+      String contentType = 'application/json'}) async {
+    final headers = await _getHeaders(contentType, includeAuth);
+
+    return await http.delete(_buildUri(endpoint), headers: headers);
+  }
+
   // Get headers
   Future<Map<String, String>> _getHeaders(
-      String contentType, includeAuth) async {
-    final headers = {'Content-Type': contentType};
+      String? contentType, includeAuth) async {
+    var headers = <String, String>{};
+
+    if (contentType != null) {
+      headers['Content-Type'] = contentType;
+    }
+
     if (includeAuth) {
       final token = await _authService.getToken();
       headers['Authorization'] = 'Bearer ${token.toString()}';

@@ -57,7 +57,7 @@ class RentalController {
       state: "RESERVED",
       inspections: null,
       customer: customer.toJson(),
-      car: car,
+      car: car.toJson(), // TODO: should use carModel
     );
 
     var response = await apiService.rentCar(rental);
@@ -127,5 +127,14 @@ class RentalController {
     }
 
     return null;
+  }
+
+  Future<bool> removeRental(int rentalId) async {
+    final response = await apiService.removeRental(rentalId);
+
+    print(response.body);
+
+    // TODO: make a helper function for this recurring check
+    return response.statusCode >= 200 && response.statusCode < 300;
   }
 }
