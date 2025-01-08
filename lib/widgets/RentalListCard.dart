@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app_development/models/RentalModel.dart';
 
 class RentalListCard extends StatelessWidget {
-  final dynamic rental; // TODO: no dynamic
+  final RentalModel rental;
 
   const RentalListCard({super.key, required this.rental});
 
@@ -21,20 +22,25 @@ class RentalListCard extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(top: 5, left: 5),
+                      margin: const EdgeInsets.only(top: 10, left: 5),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            rental.code,
-                            style: const TextStyle(fontSize: 25),
+                            "Kenmerk: ${rental.code}\n",
+                            style: const TextStyle(fontSize: 15),
                           ),
                           Text(
-                            "Van: ${rental.fromDate}",
-                            style: const TextStyle(fontSize: 25),
+                            "Van: ${rental.fromDate} tot ${rental.toDate}",
+                            style: const TextStyle(fontSize: 20),
                           ),
                           Text(
-                            "Tot: ${rental.toDate}",
-                            style: const TextStyle(fontSize: 25),
+                            "Inspecties: ${rental.inspections?.length}",
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          Text(
+                            "Status: ${rental.state}",
+                            style: const TextStyle(fontSize: 20),
                           ),
                         ],
                       ),

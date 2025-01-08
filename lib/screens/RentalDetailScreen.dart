@@ -38,7 +38,7 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ElevatedButton(
-                      onPressed: () => context.go('/createinspectionscreen'),
+                      onPressed: () => context.go('/create_inspection/${rental!.code}'),
                       child: const Text('Melding maken'),
                     ),
                   ],
