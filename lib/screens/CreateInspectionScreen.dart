@@ -103,11 +103,11 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
       if (isSuccess) {
         RouteHelper.showSnackBarAndNavigate(
             context, 'Melding gemaakt', '/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Kon geen melding maken')),
+        );
       }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Er ging iets mis')),
-      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Er ging iets mis')),

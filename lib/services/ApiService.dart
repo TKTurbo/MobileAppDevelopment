@@ -35,6 +35,9 @@ class ApiService {
   Future<http.Response> rentCar(RentalModel rental) async =>
       await _post('/rentals', rental.toJson());
 
+  Future<http.Response> changeRental(RentalModel rental) async =>
+      await _put('/rentals/${rental.id}', rental.toJson());
+
   Future<http.Response> changePassword(
           ChangePasswordModel changePasswordModel) async =>
       await _post('/account/change-password', changePasswordModel.toJson());
@@ -95,11 +98,19 @@ class ApiService {
 
   // DELETE request
   Future<http.Response> _delete(String endpoint,
+      {bool includeAuth = true}) async {
+    final headers = await _getHeaders(null, includeAuth);
+
+    return await http.delete(_buildUri(endpoint), headers: headers);
+  }
+
+  // PUT request
+  Future<http.Response> _put(String endpoint, String body,
       {bool includeAuth = true,
       String contentType = 'application/json'}) async {
     final headers = await _getHeaders(contentType, includeAuth);
 
-    return await http.delete(_buildUri(endpoint), headers: headers);
+    return await http.put(_buildUri(endpoint), headers: headers, body: body);
   }
 
   // Get headers
@@ -118,6 +129,7 @@ class ApiService {
     return headers;
   }
 
+  // TODO: move to CacheHelper
   Future<http.Response> getCachedResponse(String endpoint) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? cachedResponse = prefs.getString(endpoint);

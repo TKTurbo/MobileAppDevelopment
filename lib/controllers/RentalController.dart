@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:mobile_app_development/controllers/HttpResponseExtension.dart';
 import 'package:mobile_app_development/models/CustomerModel.dart';
 import 'package:mobile_app_development/models/RentalModel.dart';
 import 'package:uuid/uuid.dart';
@@ -15,7 +16,7 @@ class RentalController {
 
   Future<List<CarModel>> getAllCars() async {
     final response = await apiService.getAllCars();
-    if (response.statusCode == 200) {
+    if (response.isSuccessful()) {
       final carListJson = json.decode(response.body);
       List<CarModel> carList = [];
 
@@ -33,7 +34,7 @@ class RentalController {
   Future<CarModel?> getCar(int id) async {
     final response = await apiService.getCar(id);
 
-    if (response.statusCode == 200) {
+    if (response.isSuccessful()) {
       final carJson = json.decode(response.body);
       final car = CarModel.fromJson(carJson);
       return car;
@@ -44,7 +45,12 @@ class RentalController {
 
   Future<bool> rentCar(CarModel car, DateTime from, DateTime to) async {
     var getCustomer = await apiService.getCurrentCustomer();
+
+    print('MOKER');
+
     var customer = CustomerModel.fromJson(json.decode(getCustomer.body));
+
+    print('FDIR');
 
     final formatter = DateFormat("yyyy-MM-dd");
     final rental = RentalModel(
@@ -56,13 +62,17 @@ class RentalController {
       toDate: formatter.format(to),
       state: "RESERVED",
       inspections: null,
-      customer: customer.toJson(),
-      car: car.toJson(), // TODO: should use carModel
+      customer: customer,
+      car: car,
     );
+
+    print('koekje');
 
     var response = await apiService.rentCar(rental);
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+    print(rental.toJson());
+
+    if (response.isSuccessful()) {
       notificationService.scheduleReturnReminder(to, car);
       return true;
     }
@@ -73,7 +83,7 @@ class RentalController {
   Future<List<RentalModel>> getRentals() async {
     final response = await apiService.getCurrentCustomer();
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+    if (response.isSuccessful()) {
       var responseBody = json.decode(response.body);
 
       CustomerModel customer = CustomerModel.fromJson(responseBody);
@@ -81,7 +91,7 @@ class RentalController {
       List<RentalModel> customerRentals = [];
       if (customer.rentals != null) {
         for (var i = 0; i < customer.rentals.length; i++) {
-          RentalModel rental = RentalModel.fromJson(customer.rentals[i]);
+          RentalModel rental = customer.rentals[i];
           customerRentals.add(rental);
         }
       }
@@ -95,7 +105,7 @@ class RentalController {
   Future<List<RentalModel>> getActiveRentals() async {
     final response = await apiService.getCurrentCustomer();
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+    if (response.isSuccessful()) {
       var responseBody = json.decode(response.body);
 
       CustomerModel customer = CustomerModel.fromJson(responseBody);
@@ -103,9 +113,9 @@ class RentalController {
       List<RentalModel> customerRentals = [];
       if (customer.rentals != null) {
         for (var i = 0; i < customer.rentals.length; i++) {
-          if (customer.rentals[i]['state'] == 'RESERVED' ||
-              customer.rentals[i]['state'] == 'ACTIVE') {
-            RentalModel rental = RentalModel.fromJson(customer.rentals[i]);
+          if (customer.rentals[i].state == 'RESERVED' ||
+              customer.rentals[i].state == 'ACTIVE') {
+            RentalModel rental = customer.rentals[i];
             customerRentals.add(rental);
           }
         }
@@ -120,9 +130,18 @@ class RentalController {
   Future<RentalModel?> getRental(int id) async {
     final response = await apiService.getRental(id);
 
-    if (response.statusCode == 200) {
+    if (response.isSuccessful()) {
       final rentalJson = json.decode(response.body);
+
+      try {
+        final rental = RentalModel.fromJson(rentalJson);
+      } catch (e, stackTrace) {
+        print('Error: $e');
+        print('StackTrace: $stackTrace');
+      }
+
       final rental = RentalModel.fromJson(rentalJson);
+
       return rental;
     }
 
@@ -132,9 +151,15 @@ class RentalController {
   Future<bool> removeRental(int rentalId) async {
     final response = await apiService.removeRental(rentalId);
 
+    // TODO: use this everywhere
+    return response.isSuccessful();
+  }
+
+  Future<bool> changeRental(RentalModel rental) async {
+    final response = await apiService.changeRental(rental);
+
     print(response.body);
 
-    // TODO: make a helper function for this recurring check
-    return response.statusCode >= 200 && response.statusCode < 300;
+    return response.isSuccessful();
   }
 }
