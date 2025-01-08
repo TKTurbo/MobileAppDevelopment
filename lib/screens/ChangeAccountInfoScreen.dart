@@ -5,6 +5,7 @@ import 'package:mobile_app_development/models/AccountInfoModel.dart';
 
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
+import '../helpers/RouteHelper.dart';
 import '../services/AuthService.dart';
 import '../widgets/MainBottomNavigation.dart';
 
@@ -92,10 +93,8 @@ class ChangeAccountInfoState extends State<ChangeAccountInfoScreen> {
     bool isSuccess = await _controller.changeAccountInfo(_accountInfoModel);
 
     if (isSuccess) {
-      context.go('/account');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Accountinfo gewijzigd')),
-      );
+      RouteHelper.showSnackBarAndNavigate(
+          context, 'Accountinfo gewijzigd', '/account');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Kon accountinfo niet wijzigen')),

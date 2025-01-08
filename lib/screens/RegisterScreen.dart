@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../controllers/RegisterController.dart';
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
+import '../helpers/RouteHelper.dart';
 import '../models/sendonly/RegisterModel.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -14,7 +15,8 @@ class RegisterScreen extends StatefulWidget {
 
 class RegisterState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final RegisterController _controller = DependencyInjection.getIt.get<RegisterController>();
+  final RegisterController _controller =
+      DependencyInjection.getIt.get<RegisterController>();
 
   final RegisterModel _registerModel = RegisterModel(
     username: '',
@@ -95,7 +97,8 @@ class RegisterState extends State<RegisterScreen> {
     var registerSuccess = await _controller.register(_registerModel);
 
     if (registerSuccess) {
-      context.go('/login');
+      RouteHelper.showSnackBarAndNavigate(
+          context, 'Succesvol geregistreerd. Log Aub in.', '/login');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Registratie mislukt')),

@@ -3,15 +3,17 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app_development/controllers/InspectionController.dart';
 import 'package:mobile_app_development/models/InspectionModel.dart';
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
+import '../helpers/RouteHelper.dart';
 
 class CreateInspectionScreen extends StatefulWidget {
-  const CreateInspectionScreen({super.key});
+  final String rentalCode;
+
+  const CreateInspectionScreen({super.key, required this.rentalCode});
 
   @override
   CreateInspectionScreenState createState() => CreateInspectionScreenState();
@@ -29,7 +31,7 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
       description: "",
       photo: "",
       photoContentType: "",
-      completed: DateTime.now().toUtc());
+      completed: DateTime.now().toUtc()); // TODO: should be null
 
   File? _image;
 
@@ -93,15 +95,23 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
     String base64Image = base64Encode(bytes);
 
     try {
-      // TODO: refactor
+      // TODO: refactor, naar controller
+      _inspectionModel.code = widget.rentalCode;
       _inspectionModel.photo = base64Image;
+      var isSuccess = await _controller.addInspection(_inspectionModel);
 
-      _controller.addInspection(_inspectionModel);
+      if (isSuccess) {
+        RouteHelper.showSnackBarAndNavigate(
+            context, 'Melding gemaakt', '/home');
+      }
 
-      context.go('/home');
-      const SnackBar(content: Text('Melding gemaakt'));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Er ging iets mis')),
+      );
     } catch (e) {
-      const SnackBar(content: Text('Er ging iets mis'));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Er ging iets mis')),
+      );
     }
   }
 

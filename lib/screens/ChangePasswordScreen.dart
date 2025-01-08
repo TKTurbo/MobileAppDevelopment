@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mobile_app_development/controllers/ChangePasswordController.dart';
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
+import '../helpers/RouteHelper.dart';
 import '../models/sendonly/ChangePasswordModel.dart';
-import '../services/AuthService.dart';
 import '../widgets/MainBottomNavigation.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -20,7 +19,6 @@ class ChangePasswordState extends State<ChangePasswordScreen> {
       DependencyInjection.getIt.get<ChangePasswordController>();
   final ChangePasswordModel _changePasswordModel =
       ChangePasswordModel(currentPassword: "", newPassword: "");
-  final AuthService _authService = DependencyInjection.getIt.get<AuthService>();
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +74,8 @@ class ChangePasswordState extends State<ChangePasswordScreen> {
     bool isSuccess = await _controller.changePassword(_changePasswordModel);
 
     if (isSuccess) {
-      _authService.clearToken();
-      context.go('/login');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Wachtwoord veranderd. Log A.u.b. opnieuw in.')),
-      );
+      RouteHelper.showSnackBarAndNavigate(
+          context, 'Wachtwoord veranderd. Log A.u.b. opnieuw in.', '/login');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

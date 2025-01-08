@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app_development/screens/AccountScreen.dart';
 import 'package:mobile_app_development/screens/ChangeAccountInfoScreen.dart';
 import 'package:mobile_app_development/screens/ChangePasswordScreen.dart';
+import 'package:mobile_app_development/screens/PasswordResetScreen.dart';
 import 'package:mobile_app_development/screens/static/ContactScreen.dart';
 import 'package:mobile_app_development/screens/CreateInspectionScreen.dart';
 import 'package:mobile_app_development/screens/static/FaqScreen.dart';
@@ -41,6 +42,11 @@ final _router = GoRouter(
       name: 'register',
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
+      name: 'password_reset',
+      path: '/password_reset',
+      builder: (context, state) => const PasswordResetScreen(),
     ),
     GoRoute(
       name: 'home',
@@ -90,9 +96,9 @@ final _router = GoRouter(
       builder: (context, state) => const RentalHistoryScreen(),
     ),
     GoRoute(
-      name: 'create_inspection_screen',
-      path: '/createinspectionscreen',
-      builder: (context, state) => const CreateInspectionScreen(),
+      name: 'create_inspection',
+      path: '/create_inspection/:rentalCode',
+      builder: (context, state) => CreateInspectionScreen(rentalCode: state.pathParameters['rentalCode']!),
     ),
     GoRoute(
       name: 'faq',
