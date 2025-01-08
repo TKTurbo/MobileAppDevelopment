@@ -1,3 +1,5 @@
+import 'package:mobile_app_development/controllers/HttpResponseExtension.dart';
+
 import '../DependencyInjection.dart';
 import '../services/ApiService.dart';
 
@@ -7,6 +9,6 @@ class PasswordResetController {
   Future<bool> resetPassword(String email) async {
     final response = await apiService.resetPassword(email);
 
-    return response.statusCode >= 200 && response.statusCode < 300;
+    return response.isSuccessful();
   }
 }

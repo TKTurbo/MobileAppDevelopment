@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:mobile_app_development/controllers/HttpResponseExtension.dart';
 import 'package:mobile_app_development/services/ApiService.dart';
 import '../DependencyInjection.dart';
 import '../models/sendonly/RegisterModel.dart';
@@ -9,11 +10,10 @@ class RegisterController {
   final ApiService apiService = DependencyInjection.getIt.get<ApiService>();
   final _authService = DependencyInjection.getIt.get<AuthService>();
 
-
   Future<bool> register(RegisterModel registerModel) async {
     final response = await apiService.register(registerModel);
 
-    if (response.statusCode == 200) {
+    if (response.isSuccessful()) {
       final responseBody = jsonDecode(response.body);
       final token = responseBody['token'];
       if (token != null) {
@@ -21,6 +21,6 @@ class RegisterController {
       }
     }
 
-    return response.statusCode >= 200 && response.statusCode < 300;
+    return response.isSuccessful();
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:mobile_app_development/controllers/HttpResponseExtension.dart';
 import 'package:mobile_app_development/services/ApiService.dart';
 import '../DependencyInjection.dart';
 import '../models/sendonly/LoginModel.dart';
@@ -12,7 +13,9 @@ class LoginController {
   Future<bool> login(LoginModel loginModel) async {
     final response = await apiService.login(loginModel);
 
-    if (response.statusCode == 200) {
+    bool isSuccess = response.isSuccessful();
+
+    if (isSuccess) {
       final responseBody = jsonDecode(response.body);
       final token = responseBody['id_token'];
       if (token != null) {
@@ -20,7 +23,7 @@ class LoginController {
       }
     }
 
-    return response.statusCode >= 200 && response.statusCode < 300;
+    return isSuccess;
   }
 
   Future<bool> isLoggedIn() async {
