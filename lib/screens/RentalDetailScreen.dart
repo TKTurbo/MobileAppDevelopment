@@ -53,10 +53,11 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
                       style: const TextStyle(fontSize: 20, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
-                    ElevatedButton(
-                      onPressed: () => activateRental(context),
-                      child: const Text('Reservering activeren'),
-                    ),
+                    if (rental.state != 'ACTIVE')
+                      ElevatedButton(
+                        onPressed: () => activateRental(context),
+                        child: const Text('Reservering activeren'),
+                      ),
                     const SizedBox(height: 16),
                     if (rental.state != 'RESERVED') ...[
                       ElevatedButton(
