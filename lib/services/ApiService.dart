@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:mobile_app_development/models/AccountInfoModel.dart';
 import 'package:mobile_app_development/models/InspectionModel.dart';
 import 'package:mobile_app_development/services/AuthService.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../helpers/CacheHelper.dart';
 import '../models/RentalModel.dart';
 
 import '../DependencyInjection.dart';
@@ -13,8 +13,7 @@ import '../models/sendonly/ChangePasswordModel.dart';
 
 class ApiService {
   final _authService = DependencyInjection.getIt.get<AuthService>();
-  final String baseUrl =
-      'https://mad.thomaskreder.nl/api'; // TODO: place in config or .env file
+  final String baseUrl = 'https://mad.thomaskreder.nl/api';
 
   Future<http.Response> getAllCars() async => await _get('/cars');
 
@@ -27,10 +26,16 @@ class ApiService {
 
   Future<http.Response> getRentalCount() async => await _get('/rentals/count');
 
+  Future<http.Response> removeRental(int id) async =>
+      await _delete('/rentals/$id');
+
   Future<http.Response> getCurrentCustomer() async => await _get('/AM/me');
 
   Future<http.Response> rentCar(RentalModel rental) async =>
       await _post('/rentals', rental.toJson());
+
+  Future<http.Response> changeRental(RentalModel rental) async =>
+      await _put('/rentals/${rental.id}', rental.toJson());
 
   Future<http.Response> changePassword(
           ChangePasswordModel changePasswordModel) async =>
@@ -62,11 +67,11 @@ class ApiService {
   Future<http.Response> _get(String endpoint,
       {bool includeAuth = true,
       String contentType = 'application/json'}) async {
-    var isOnline = await this.isOnline();
+    var isOnline = await CacheHelper.isOnline();
 
     if (!isOnline) {
       // Only use app cache if the app is offline because we like up-to-date data
-      return getCachedResponse(endpoint);
+      return CacheHelper.getCachedResponse(endpoint);
     }
 
     final headers = await _getHeaders(contentType, includeAuth);
@@ -76,7 +81,7 @@ class ApiService {
     );
 
     // Set the cached response
-    setCachedResponse(endpoint, response);
+    CacheHelper.setCachedResponse(endpoint, response);
 
     return response;
   }
@@ -90,39 +95,36 @@ class ApiService {
     return await http.post(_buildUri(endpoint), headers: headers, body: body);
   }
 
+  // DELETE request
+  Future<http.Response> _delete(String endpoint,
+      {bool includeAuth = true}) async {
+    final headers = await _getHeaders(null, includeAuth);
+
+    return await http.delete(_buildUri(endpoint), headers: headers);
+  }
+
+  // PUT request
+  Future<http.Response> _put(String endpoint, String body,
+      {bool includeAuth = true,
+      String contentType = 'application/json'}) async {
+    final headers = await _getHeaders(contentType, includeAuth);
+
+    return await http.put(_buildUri(endpoint), headers: headers, body: body);
+  }
+
   // Get headers
   Future<Map<String, String>> _getHeaders(
-      String contentType, includeAuth) async {
-    final headers = {'Content-Type': contentType};
+      String? contentType, includeAuth) async {
+    var headers = <String, String>{};
+
+    if (contentType != null) {
+      headers['Content-Type'] = contentType;
+    }
+
     if (includeAuth) {
       final token = await _authService.getToken();
       headers['Authorization'] = 'Bearer ${token.toString()}';
     }
     return headers;
-  }
-
-  Future<http.Response> getCachedResponse(String endpoint) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? cachedResponse = prefs.getString(endpoint);
-
-    if (cachedResponse != null) {
-      return http.Response(cachedResponse, 200);
-    } else {
-      return http.Response('No cached data available', 404);
-    }
-  }
-
-  Future setCachedResponse(String endpoint, http.Response response) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(endpoint, response.body);
-  }
-
-  Future<bool> isOnline() async {
-    try {
-      final result = await InternetAddress.lookup('mad.thomaskreder.nl');
-      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } catch (e) {
-      return false;
-    }
   }
 }

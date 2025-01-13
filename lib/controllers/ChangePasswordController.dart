@@ -1,3 +1,4 @@
+import 'package:mobile_app_development/controllers/HttpResponseExtension.dart';
 import 'package:mobile_app_development/services/ApiService.dart';
 import 'package:mobile_app_development/services/AuthService.dart';
 import '../DependencyInjection.dart';
@@ -10,9 +11,9 @@ class ChangePasswordController {
   Future<bool> changePassword(ChangePasswordModel changePasswordModel) async {
     final response = await apiService.changePassword(changePasswordModel);
 
-    var isSuccess = response.statusCode >= 200 && response.statusCode < 300;
+    var isSuccess = response.isSuccessful();
 
-    if(isSuccess) {
+    if (isSuccess) {
       authService.clearToken();
     }
 

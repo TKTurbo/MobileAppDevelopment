@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:mobile_app_development/models/RentalModel.dart';
+
 class CustomerModel {
   int id;
   int? nr;
@@ -7,7 +9,7 @@ class CustomerModel {
   String firstName;
   String? from;
   dynamic systemUser;
-  dynamic rentals;
+  List<RentalModel> rentals;
 
   CustomerModel(
       {required this.id,
@@ -30,6 +32,7 @@ class CustomerModel {
     });
   }
 
+  // TODO: moet overal Map<String, dynamic> zijn
   static CustomerModel fromJson(Map<String, dynamic> data) {
     return CustomerModel(
         id: data['id'],
@@ -38,6 +41,13 @@ class CustomerModel {
         firstName: data['firstName'],
         from: data['from'],
         systemUser: data['systemUser'],
-        rentals: data['rentals']);
+        rentals: data['rentals'] != null ? rentalListFromJson(data['rentals']) : []
+    );
+  }
+
+  static List<RentalModel> rentalListFromJson(List<dynamic> data) {
+    return List<RentalModel>.from(
+        data.map((model) => RentalModel.fromJson(model))
+    );
   }
 }

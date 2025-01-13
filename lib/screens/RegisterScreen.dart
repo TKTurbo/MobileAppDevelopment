@@ -98,7 +98,7 @@ class RegisterState extends State<RegisterScreen> {
 
     if (registerSuccess) {
       RouteHelper.showSnackBarAndNavigate(
-          context, 'Succesvol geregistreerd. Log Aub in.', '/login');
+          context, 'Succesvol geregistreerd. U heeft een e-mail ontvangen om uw account te activeren', '/login');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Registratie mislukt')),

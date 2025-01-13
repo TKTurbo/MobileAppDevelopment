@@ -52,6 +52,7 @@ dependencies:
   geolocator: ^13.0.2
   flutter_offline: "^4.0.0"
   shared_preferences: ^2.0.9
+  flutter_launcher_icons: ^0.14.2
 
 dev_dependencies:
   flutter_test:
@@ -105,3 +106,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.png"
+  min_sdk_android: 21

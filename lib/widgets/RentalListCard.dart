@@ -35,13 +35,9 @@ class RentalListCard extends StatelessWidget {
                             style: const TextStyle(fontSize: 20),
                           ),
                           Text(
-                            "Inspecties: ${rental.inspections?.length}",
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          Text(
                             "Status: ${rental.state}",
                             style: const TextStyle(fontSize: 20),
-                          ),
+                          )
                         ],
                       ),
                     ),
