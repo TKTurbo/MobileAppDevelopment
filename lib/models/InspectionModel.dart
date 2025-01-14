@@ -22,17 +22,17 @@ class InspectionModel {
     DateTime? completed,
   });
 
-  static InspectionModel fromJson(Map<String, dynamic> json) {
+  static InspectionModel fromJson(Map<String, dynamic> data) {
     return InspectionModel(
-      id: json['id'],
-      code: json['code'],
-      odometer: json['odometer'],
-      result: json['result'],
-      description: json['description'],
-      photo: json['photo'],
-      photoContentType: json['photoContentType'],
+      id: data['id'],
+      code: data['code'],
+      odometer: data['odometer'],
+      result: data['result'],
+      description: data['description'],
+      photo: data['photo'],
+      photoContentType: data['photoContentType'],
       completed:
-          json['completed'] != null ? DateTime.parse(json['completed']) : null,
+          data['completed'] != null ? DateTime.parse(data['completed']) : null,
     );
   }
 

@@ -54,22 +54,22 @@ class CarModel {
     });
   }
 
-  static fromJson(car) {
+  static fromJson(Map<String, dynamic> data) {
     return CarModel(
-        id: car['id'],
-        brand: car['brand'],
-        model: car['model'],
-        picture: car['picture'],
-        fuel: car['fuel'],
-        options: car['options'],
-        licensePlate: car['licensePlate'],
-        engineSize: car['engineSize'],
-        modelYear: car['modelYear'],
-        since: car['since'],
-        price: car['price'],
-        body: car['body'],
-        longitude: car['longitude'],
-        latitude: car['latitude']);
+        id: data['id'],
+        brand: data['brand'],
+        model: data['model'],
+        picture: data['picture'],
+        fuel: data['fuel'],
+        options: data['options'],
+        licensePlate: data['licensePlate'],
+        engineSize: data['engineSize'],
+        modelYear: data['modelYear'],
+        since: data['since'],
+        price: data['price'],
+        body: data['body'],
+        longitude: data['longitude'],
+        latitude: data['latitude']);
   }
 
   LatLng getLatLng() {
