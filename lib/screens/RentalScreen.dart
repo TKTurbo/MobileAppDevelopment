@@ -28,7 +28,7 @@ class RentalScreen extends StatelessWidget {
                 future: rentalController.getActiveRentals(),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<RentalModel>> snapshot) {
-                  if (snapshot.hasData) {
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     List<RentalModel>? rentals = snapshot.data;
                     return Expanded(
                         child: ListView.builder(

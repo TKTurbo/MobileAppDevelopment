@@ -45,6 +45,10 @@ class RentalController {
 
   Future<bool> rentCar(CarModel car, DateTime from, DateTime to) async {
     var getCustomer = await apiService.getCurrentCustomer();
+
+    print('testt');
+    print(getCustomer.body);
+
     var customer = CustomerModel.fromJson(json.decode(getCustomer.body));
 
     final formatter = DateFormat("yyyy-MM-dd");
