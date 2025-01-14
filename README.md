@@ -1,6 +1,10 @@
-# mobile_app_development
+# BlueWheels
+## mobile_app_development
 
-A new Flutter project.
+Door Thomas Kreder en Ties Medemblik
+
+Wij hosten zelf de api: https://mad.thomaskreder.nl
+en ook de test email service: https://madmail.thomaskreder.nl
 
 ## Getting Started
 
