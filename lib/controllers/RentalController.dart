@@ -14,11 +14,11 @@ class RentalController {
   final NotificationService notificationService =
       DependencyInjection.getIt.get<NotificationService>();
 
-  Future<List<CarModel>> getAllCars() async {
+  Future<List<CarModel?>> getAllCars() async {
     final response = await apiService.getAllCars();
     if (response.isSuccessful()) {
       final carListJson = json.decode(response.body);
-      List<CarModel> carList = [];
+      List<CarModel?> carList = [];
 
       for (var i = 0; i < carListJson.length; i++) {
         final car = CarModel.fromJson(carListJson[i]);
