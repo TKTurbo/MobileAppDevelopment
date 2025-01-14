@@ -144,18 +144,69 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                   return AlertDialog(
                                     title:
                                         const Text('Kies start- en einddatum'),
-                                    content: Column(
-                                      children: [
-                                        FloatingActionButton(
-                                          child:
-                                              const Text("Startdatum kiezen"),
-                                          onPressed: () => _selectStartDate(),
-                                        ),
-                                        FloatingActionButton(
-                                          child: const Text("Einddatum kiezen"),
-                                          onPressed: () => _selectEndDate(),
-                                        ),
-                                      ],
+                                    content: StatefulBuilder(
+                                      builder: (BuildContext context, StateSetter setState) {
+                                        print('reloadmeneer');
+                                        print(selectedEndDate);
+                                        return SizedBox(
+                                          height: 100,
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                width: 300,
+                                                child: Row(
+                                                  children: [
+                                                    const Text('Start:'),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 100,
+                                                      child: Align(
+                                                        alignment: Alignment.topRight,
+                                                        child: TextFormField(
+                                                          key: Key(selectedStartDate.toString()),
+                                                          initialValue: "${selectedStartDate.day}-${selectedStartDate.month}-${selectedStartDate.year}",
+                                                          decoration: const InputDecoration(
+                                                              border: UnderlineInputBorder()
+                                                          ),
+                                                          onTap: () => setState(() => _selectStartDate()),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 300,
+                                                child: Row(
+                                                  children: [
+                                                    const Text('Eind:'),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: SizedBox(
+                                                        width: 100,
+                                                        child: TextFormField(
+                                                          key: Key(selectedEndDate.toString()),
+                                                          initialValue: "${selectedEndDate.day}-${selectedEndDate.month}-${selectedEndDate.year}",
+                                                          decoration: const InputDecoration(
+                                                              border: UnderlineInputBorder()
+                                                          ),
+                                                          onTap: () => setState(() => _selectEndDate()),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+
                                     ),
                                     actions: [
                                       TextButton(
