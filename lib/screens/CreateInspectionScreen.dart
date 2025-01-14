@@ -1,11 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app_development/controllers/InspectionController.dart';
 import 'package:mobile_app_development/models/InspectionModel.dart';
+
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
 import '../helpers/RouteHelper.dart';
@@ -91,14 +92,9 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
       _formKey.currentState!.save();
     }
 
-    List<int> bytes = _image?.readAsBytesSync() as List<int>;
-    String base64Image = base64Encode(bytes);
-
     try {
-      // TODO: refactor, naar controller
-      _inspectionModel.rentalId = widget.rentalId;
-      _inspectionModel.photo = base64Image;
-      var isSuccess = await _controller.addInspection(_inspectionModel);
+      var isSuccess = await _controller.addInspection(
+          _inspectionModel, _image, widget.rentalId);
 
       if (isSuccess) {
         RouteHelper.showSnackBarAndNavigate(
