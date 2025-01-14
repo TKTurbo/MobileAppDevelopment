@@ -63,7 +63,7 @@ class ApiService {
   // Helper method to build full URL
   Uri _buildUri(String endpoint) => Uri.parse('$baseUrl$endpoint');
 
-  // Get request
+  // GET request
   Future<http.Response> _get(String endpoint,
       {bool includeAuth = true,
       String contentType = 'application/json'}) async {
@@ -86,7 +86,7 @@ class ApiService {
     return response;
   }
 
-  // Post request
+  // POST request
   Future<http.Response> _post(String endpoint, String body,
       {bool includeAuth = true,
       String contentType = 'application/json'}) async {
