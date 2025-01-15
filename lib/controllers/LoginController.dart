@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:mobile_app_development/controllers/HttpResponseExtension.dart';
+import 'package:mobile_app_development/extensions/HttpResponseExtension.dart';
 import 'package:mobile_app_development/services/ApiService.dart';
 import '../DependencyInjection.dart';
 import '../models/sendonly/LoginModel.dart';

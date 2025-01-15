@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app_development/controllers/InspectionController.dart';
 import 'package:mobile_app_development/models/InspectionModel.dart';
@@ -40,7 +41,11 @@ class CreateInspectionScreenState extends State<CreateInspectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BlueWheels'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/rentals/${widget.rentalId}'),
+          color: const Color(0xFF6F82F8),
+        ),
       ),
       body: Center(
         child: Container(

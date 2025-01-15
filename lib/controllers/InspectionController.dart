@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:mobile_app_development/controllers/HttpResponseExtension.dart';
+import 'package:mobile_app_development/extensions/HttpResponseExtension.dart';
 import 'package:mobile_app_development/services/ApiService.dart';
 
 import '../DependencyInjection.dart';
@@ -23,5 +23,16 @@ class InspectionController {
     final response = await apiService.addInspection(inspectionModel);
 
     return response.isSuccessful();
+  }
+
+  Future<List<InspectionModel>> getInspections(int rentalId) async {
+    final response = await apiService.getInspections(rentalId);
+    var data = json.decode(response.body);
+
+    var inspections = (data as List)
+        .map((item) => InspectionModel.fromJson(item as Map<String, dynamic>))
+        .toList();
+
+    return inspections;
   }
 }

@@ -4,6 +4,7 @@ import 'package:mobile_app_development/screens/AccountScreen.dart';
 import 'package:mobile_app_development/screens/ChangeAccountInfoScreen.dart';
 import 'package:mobile_app_development/screens/ChangePasswordScreen.dart';
 import 'package:mobile_app_development/screens/PasswordResetScreen.dart';
+import 'package:mobile_app_development/screens/ViewInspectionsScreen.dart';
 import 'package:mobile_app_development/screens/static/ContactScreen.dart';
 import 'package:mobile_app_development/screens/CreateInspectionScreen.dart';
 import 'package:mobile_app_development/screens/static/FaqScreen.dart';
@@ -99,6 +100,11 @@ final _router = GoRouter(
       name: 'create_inspection',
       path: '/create_inspection/:rentalId',
       builder: (context, state) => CreateInspectionScreen(rentalId: int.parse(state.pathParameters['rentalId']!)),
+    ),
+    GoRoute(
+      name: 'view_inspections',
+      path: '/view_inspections/:rentalId',
+      builder: (context, state) => ViewInspectionsScreen(rentalId: int.parse(state.pathParameters['rentalId']!)),
     ),
     GoRoute(
       name: 'faq',
