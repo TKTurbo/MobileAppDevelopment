@@ -19,15 +19,15 @@ class AccountInfoModel {
     required this.langKey,
   });
 
-  static fromJson(accountInfo) {
+  static fromJson(Map<String, dynamic> data) {
     return AccountInfoModel(
-      id: accountInfo['id'],
-      login: accountInfo['login'],
-      firstName: accountInfo['firstName'],
-      lastName: accountInfo['lastName'],
-      email: accountInfo['email'],
-      imageUrl: accountInfo['imageUrl'],
-      langKey: accountInfo['langKey'],
+      id: data['id'],
+      login: data['login'],
+      firstName: data['firstName'],
+      lastName: data['lastName'],
+      email: data['email'],
+      imageUrl: data['imageUrl'],
+      langKey: data['langKey'],
     );
   }
 

@@ -12,7 +12,6 @@ class RentalModel {
   String toDate;
   String state;
 
-  // TODO: check if we can make the corresponding models for these
   dynamic inspections; // is always null, can be ignored
   CustomerModel? customer; // these two are not always filled
   CarModel? car;
@@ -45,18 +44,18 @@ class RentalModel {
     });
   }
 
-  static fromJson(Map<String, dynamic> rental) {
+  static fromJson(Map<String, dynamic> data) {
     return RentalModel(
-      id: rental['id'],
-      code: rental['code'],
-      longitude: rental['longitude'],
-      latitude: rental['latitude'],
-      fromDate: rental['fromDate'],
-      toDate: rental['toDate'],
-      state: rental['state'],
-      inspections: rental['inspections'], // nullable
-      customer: rental['customer'] != null ? CustomerModel.fromJson(rental['customer']) : null,
-      car: rental['car'] != null ? CarModel.fromJson(rental['car']) : null,
+      id: data['id'],
+      code: data['code'],
+      longitude: data['longitude'],
+      latitude: data['latitude'],
+      fromDate: data['fromDate'],
+      toDate: data['toDate'],
+      state: data['state'],
+      inspections: data['inspections'], // nullable
+      customer: data['customer'] != null ? CustomerModel.fromJson(data['customer']) : null,
+      car: data['car'] != null ? CarModel.fromJson(data['car']) : null,
     );
   }
 }

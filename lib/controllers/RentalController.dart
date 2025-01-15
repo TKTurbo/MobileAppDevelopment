@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:mobile_app_development/controllers/HttpResponseExtension.dart';
+import 'package:mobile_app_development/extensions/HttpResponseExtension.dart';
 import 'package:mobile_app_development/models/CustomerModel.dart';
 import 'package:mobile_app_development/models/RentalModel.dart';
 import 'package:uuid/uuid.dart';
@@ -45,12 +45,7 @@ class RentalController {
 
   Future<bool> rentCar(CarModel car, DateTime from, DateTime to) async {
     var getCustomer = await apiService.getCurrentCustomer();
-
-    print('MOKER');
-
     var customer = CustomerModel.fromJson(json.decode(getCustomer.body));
-
-    print('FDIR');
 
     final formatter = DateFormat("yyyy-MM-dd");
     final rental = RentalModel(
@@ -66,11 +61,7 @@ class RentalController {
       car: car,
     );
 
-    print('koekje');
-
     var response = await apiService.rentCar(rental);
-
-    print(rental.toJson());
 
     if (response.isSuccessful()) {
       notificationService.scheduleReturnReminder(to, car);
@@ -89,11 +80,9 @@ class RentalController {
       CustomerModel customer = CustomerModel.fromJson(responseBody);
 
       List<RentalModel> customerRentals = [];
-      if (customer.rentals != null) {
-        for (var i = 0; i < customer.rentals.length; i++) {
-          RentalModel rental = customer.rentals[i];
-          customerRentals.add(rental);
-        }
+      for (var i = 0; i < customer.rentals.length; i++) {
+        RentalModel rental = customer.rentals[i];
+        customerRentals.add(rental);
       }
 
       return customerRentals;
@@ -111,13 +100,11 @@ class RentalController {
       CustomerModel customer = CustomerModel.fromJson(responseBody);
 
       List<RentalModel> customerRentals = [];
-      if (customer.rentals != null) {
-        for (var i = 0; i < customer.rentals.length; i++) {
-          if (customer.rentals[i].state == 'RESERVED' ||
-              customer.rentals[i].state == 'ACTIVE') {
-            RentalModel rental = customer.rentals[i];
-            customerRentals.add(rental);
-          }
+      for (var i = 0; i < customer.rentals.length; i++) {
+        if (customer.rentals[i].state == 'RESERVED' ||
+            customer.rentals[i].state == 'ACTIVE') {
+          RentalModel rental = customer.rentals[i];
+          customerRentals.add(rental);
         }
       }
 

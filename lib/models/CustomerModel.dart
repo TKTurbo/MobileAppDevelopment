@@ -32,7 +32,6 @@ class CustomerModel {
     });
   }
 
-  // TODO: moet overal Map<String, dynamic> zijn
   static CustomerModel fromJson(Map<String, dynamic> data) {
     return CustomerModel(
         id: data['id'],

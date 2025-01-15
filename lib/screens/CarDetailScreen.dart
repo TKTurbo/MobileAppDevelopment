@@ -146,8 +146,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                         const Text('Kies start- en einddatum'),
                                     content: StatefulBuilder(
                                       builder: (BuildContext context, StateSetter setState) {
-                                        print('reloadmeneer');
-                                        print(selectedEndDate);
                                         return SizedBox(
                                           height: 100,
                                           child: Column(

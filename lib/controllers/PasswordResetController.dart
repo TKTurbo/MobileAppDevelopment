@@ -1,4 +1,4 @@
-import 'package:mobile_app_development/controllers/HttpResponseExtension.dart';
+import 'package:mobile_app_development/extensions/HttpResponseExtension.dart';
 
 import '../DependencyInjection.dart';
 import '../services/ApiService.dart';

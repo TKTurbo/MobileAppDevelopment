@@ -1,14 +1,11 @@
-import 'dart:io';
-
 import 'package:http/http.dart' as http;
 import 'package:mobile_app_development/models/AccountInfoModel.dart';
 import 'package:mobile_app_development/models/InspectionModel.dart';
 import 'package:mobile_app_development/services/AuthService.dart';
 
+import '../DependencyInjection.dart';
 import '../helpers/CacheHelper.dart';
 import '../models/RentalModel.dart';
-
-import '../DependencyInjection.dart';
 import '../models/sendonly/ChangePasswordModel.dart';
 
 class ApiService {
@@ -17,7 +14,6 @@ class ApiService {
 
   Future<http.Response> getAllCars() async => await _get('/cars');
 
-  //TODO hack. Remove when rentals can be acquired via a customer
   Future<http.Response> getAllRentals() async => await _get('/rentals');
 
   Future<http.Response> getCar(int id) async => await _get('/cars/$id');
@@ -49,6 +45,9 @@ class ApiService {
 
   Future<http.Response> addInspection(InspectionModel inspectionModel) async =>
       await _post('/inspections', inspectionModel.toJson());
+
+  Future<http.Response> getInspections(int rentalId) async =>
+      await _get('/inspections?rentalId.equals=$rentalId');
 
   Future<http.Response> register(registerModel) async =>
       await _post('/AM/register', registerModel.toJson(), includeAuth: false);

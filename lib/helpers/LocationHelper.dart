@@ -21,7 +21,6 @@ class LocationHelper {
     return double.parse(distance.toStringAsFixed(3)); // Limit to 3 decimals
   }
 
-  // TODO: If it takes too long, or we are denied, we should correctly handle it
   static Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;

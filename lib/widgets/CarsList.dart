@@ -109,7 +109,6 @@ class _CarsListState extends State<CarsList> {
                     },
                     suggestionsBuilder:
                         (BuildContext context, SearchController controller) {
-                      //TODO andere manier van renderen resultaten searchbar. Nu wordt er voor niets een builder aangemaakt
                       return [];
                     },
                   ),

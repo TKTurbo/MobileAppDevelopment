@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../controllers/RentalController.dart';
 import '../DependencyInjection.dart';
+import '../controllers/RentalController.dart';
 import '../helpers/RouteHelper.dart';
 import '../models/RentalModel.dart';
 
@@ -66,8 +66,8 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
                         child: const Text('Melding maken'),
                       ),
                       ElevatedButton(
-                        onPressed: () => print('todo'),
-                        // TODO: show inspections
+                        onPressed: () =>
+                            context.go('/view_inspections/${rental.id}'),
                         child: const Text('Bekijk meldingen'),
                       ),
                     ] else
@@ -77,7 +77,7 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text('Bevestigen'),
+                                title: const Text('Bevestigen'),
                                 content: const Text(
                                     'Weet u zeker dat u deze reservering wil annuleren?'),
                                 actions: [
