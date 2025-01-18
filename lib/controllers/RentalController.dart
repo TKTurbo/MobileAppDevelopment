@@ -1,9 +1,11 @@
 import 'dart:convert';
+
 import 'package:intl/intl.dart';
 import 'package:mobile_app_development/extensions/HttpResponseExtension.dart';
 import 'package:mobile_app_development/models/CustomerModel.dart';
 import 'package:mobile_app_development/models/RentalModel.dart';
 import 'package:uuid/uuid.dart';
+
 import '../DependencyInjection.dart';
 import '../models/CarModel.dart';
 import '../services/ApiService.dart';
@@ -120,13 +122,6 @@ class RentalController {
     if (response.isSuccessful()) {
       final rentalJson = json.decode(response.body);
 
-      try {
-        final rental = RentalModel.fromJson(rentalJson);
-      } catch (e, stackTrace) {
-        print('Error: $e');
-        print('StackTrace: $stackTrace');
-      }
-
       final rental = RentalModel.fromJson(rentalJson);
 
       return rental;
@@ -143,8 +138,6 @@ class RentalController {
 
   Future<bool> changeRental(RentalModel rental) async {
     final response = await apiService.changeRental(rental);
-
-    print(response.body);
 
     return response.isSuccessful();
   }

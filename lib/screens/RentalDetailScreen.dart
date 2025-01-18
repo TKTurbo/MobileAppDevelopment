@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app_development/helpers/LocationHelper.dart';
 
 import '../DependencyInjection.dart';
 import '../controllers/RentalController.dart';
@@ -59,6 +60,36 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
                         child: const Text('Reservering activeren'),
                       ),
                     const SizedBox(height: 16),
+                    if (rental.state == 'ACTIVE') ...[
+                      ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Bevestigen'),
+                                content: const Text(
+                                    'Reservering eindigen en op deze plaats laten ophalen?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text('Annuleren'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      returnRental(context);
+                                    },
+                                    child: const Text('Bevestigen'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: const Text('Reservering eindigen'),
+                      ),
+                    ],
                     if (rental.state != 'RESERVED') ...[
                       ElevatedButton(
                         onPressed: () =>
@@ -130,8 +161,6 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
     rental.state = 'ACTIVE';
     var isSuccess = await _rentalController.changeRental(rental);
 
-    print(isSuccess);
-
     if (isSuccess) {
       RouteHelper.showSnackBarAndNavigate(
           context, 'Reservering is geactiveerd', '/rentals');
@@ -139,6 +168,32 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Reservering kon niet geactiveerd worden')),
+      );
+    }
+  }
+
+  Future<void> returnRental(BuildContext context) async {
+    try {
+      var location = await LocationHelper.determinePosition();
+      rental.latitude = location.latitude;
+      rental.longitude = location.longitude;
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Kon locatie niet ophalen')));
+      return;
+    }
+
+    rental.state = 'PICKUP';
+
+    var isSuccess = await _rentalController.changeRental(rental);
+
+    if (isSuccess) {
+      RouteHelper.showSnackBarAndNavigate(
+          context, 'Reservering is beëindigt', '/rentals');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Reservering kon niet beëindigt worden')),
       );
     }
   }
