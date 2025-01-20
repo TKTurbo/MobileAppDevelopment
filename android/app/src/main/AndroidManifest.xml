@@ -4,7 +4,7 @@
         android:name="android.hardware.camera"
         android:required="false" />
     <application
-        android:label="mobile_app_development"
+        android:label="BlueWheels"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
