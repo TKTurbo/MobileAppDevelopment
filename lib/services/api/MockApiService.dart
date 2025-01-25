@@ -8,19 +8,16 @@ import 'IApiService.dart';
 class MockApiService extends IApiService {
   @override
   changeRental(RentalModel rental) {
-    // TODO: implement changeRental
     throw UnimplementedError();
   }
 
   @override
   getAllCars() {
-    // TODO: implement getAllCars
     throw UnimplementedError();
   }
 
   @override
   getCar(int id) {
-    // TODO: implement getCar
     throw UnimplementedError();
   }
 
@@ -47,7 +44,6 @@ class MockApiService extends IApiService {
 
   @override
   removeRental(int rentalId) {
-    // TODO: implement removeRental
     throw UnimplementedError();
   }
 
