@@ -28,7 +28,6 @@ class NotificationService {
   }
 
   Future<void> scheduleReturnReminder(DateTime endDate, CarModel car) async {
-    print(endDate);
     //Schedule a reminder for returning the car an hour before the rental period ends
     //Reminder is scheduled one hour before the end of the rental
     final reminderDateTime = tz.TZDateTime.from(endDate.subtract(const Duration(hours: 1)), tz.local);
