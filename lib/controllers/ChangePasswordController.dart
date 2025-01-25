@@ -1,6 +1,6 @@
 import 'package:mobile_app_development/extensions/HttpResponseExtension.dart';
-import 'package:mobile_app_development/services/ApiService.dart';
-import 'package:mobile_app_development/services/AuthService.dart';
+import 'package:mobile_app_development/services/api/ApiService.dart';
+import 'package:mobile_app_development/services/auth/AuthService.dart';
 import '../DependencyInjection.dart';
 import '../models/sendonly/ChangePasswordModel.dart';
 

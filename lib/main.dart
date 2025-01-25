@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:mobile_app_development/Routes.dart';
-import 'package:mobile_app_development/services/AuthService.dart';
-import 'package:mobile_app_development/services/NotificationService.dart';
+import 'package:mobile_app_development/services/auth/AuthService.dart';
+import 'package:mobile_app_development/services/notification/NotificationService.dart';
 
 import 'DependencyInjection.dart';
 

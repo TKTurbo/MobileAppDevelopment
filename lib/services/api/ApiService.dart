@@ -1,35 +1,43 @@
 import 'package:http/http.dart' as http;
+import 'package:mobile_app_development/DependencyInjection.dart';
+import 'package:mobile_app_development/helpers/cache/CacheHelper.dart';
 import 'package:mobile_app_development/models/AccountInfoModel.dart';
 import 'package:mobile_app_development/models/InspectionModel.dart';
-import 'package:mobile_app_development/services/AuthService.dart';
+import 'package:mobile_app_development/models/RentalModel.dart';
+import 'package:mobile_app_development/models/sendonly/ChangePasswordModel.dart';
+import 'package:mobile_app_development/services/api/IApiService.dart';
+import 'package:mobile_app_development/services/auth/AuthService.dart';
 
-import '../DependencyInjection.dart';
-import '../helpers/CacheHelper.dart';
-import '../models/RentalModel.dart';
-import '../models/sendonly/ChangePasswordModel.dart';
-
-class ApiService {
+class ApiService extends IApiService {
   final _authService = DependencyInjection.getIt.get<AuthService>();
+  final _cacheHelper = DependencyInjection.getIt.get<CacheHelper>();
   final String baseUrl = 'https://mad.thomaskreder.nl/api';
 
+  @override
   Future<http.Response> getAllCars() async => await _get('/cars');
 
   Future<http.Response> getAllRentals() async => await _get('/rentals');
 
+  @override
   Future<http.Response> getCar(int id) async => await _get('/cars/$id');
 
+  @override
   Future<http.Response> getRental(int id) async => await _get('/rentals/$id');
 
   Future<http.Response> getRentalCount() async => await _get('/rentals/count');
 
+  @override
   Future<http.Response> removeRental(int id) async =>
       await _delete('/rentals/$id');
 
+  @override
   Future<http.Response> getCurrentCustomer() async => await _get('/AM/me');
 
+  @override
   Future<http.Response> rentCar(RentalModel rental) async =>
       await _post('/rentals', rental.toJson());
 
+  @override
   Future<http.Response> changeRental(RentalModel rental) async =>
       await _put('/rentals/${rental.id}', rental.toJson());
 
@@ -70,7 +78,7 @@ class ApiService {
 
     if (!isOnline) {
       // Only use app cache if the app is offline because we like up-to-date data
-      return CacheHelper.getCachedResponse(endpoint);
+      return _cacheHelper.getCachedResponse(endpoint);
     }
 
     final headers = await _getHeaders(contentType, includeAuth);
@@ -80,7 +88,7 @@ class ApiService {
     );
 
     // Set the cached response
-    CacheHelper.setCachedResponse(endpoint, response);
+    _cacheHelper.setCachedResponse(endpoint, response);
 
     return response;
   }

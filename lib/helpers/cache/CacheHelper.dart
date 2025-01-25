@@ -1,12 +1,16 @@
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'ICacheStorage.dart';
 
 class CacheHelper {
-  static Future<http.Response> getCachedResponse(String endpoint) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? cachedResponse = prefs.getString(endpoint);
+  ICacheStorage prefs;
+
+  CacheHelper(this.prefs);
+
+  Future<http.Response> getCachedResponse(String endpoint) async {
+    String? cachedResponse = await prefs.getString(endpoint);
 
     if (cachedResponse != null) {
       return http.Response(cachedResponse, 200);
@@ -15,9 +19,8 @@ class CacheHelper {
     }
   }
 
-  static Future setCachedResponse(
+  Future setCachedResponse(
       String endpoint, http.Response response) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(endpoint, response.body);
   }
 

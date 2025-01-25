@@ -35,7 +35,7 @@ class CarModel {
     required this.latitude,
   });
 
-  String toJson() {
+  toJson() {
     return jsonEncode({
       'id': id,
       'brand': brand,

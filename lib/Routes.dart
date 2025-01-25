@@ -16,7 +16,7 @@ import 'package:mobile_app_development/screens/HomeScreen.dart';
 import 'package:mobile_app_development/screens/LoginScreen.dart';
 import 'package:mobile_app_development/screens/RegisterScreen.dart';
 import 'package:mobile_app_development/screens/RentalScreen.dart';
-import 'package:mobile_app_development/services/AuthService.dart';
+import 'package:mobile_app_development/services/auth/AuthService.dart';
 import 'DependencyInjection.dart';
 
 final authService = DependencyInjection.getIt.get<AuthService>();
