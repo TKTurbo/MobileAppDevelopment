@@ -25,6 +25,8 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       DependencyInjection.getIt.get<RentalController>();
   DateTime selectedStartDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
+  TimeOfDay selectedStartTime = TimeOfDay.now();
+  TimeOfDay selectedEndTime = TimeOfDay.now();
   late LatLng userLocation;
   bool userLocationLoaded = false;
 
@@ -171,6 +173,26 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                                           onTap: () => setState(() => _selectStartDate()),
                                                         ),
                                                       ),
+                                                    ),
+                                                    const Text('Tijd:'),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 100,
+                                                      child: Align(
+                                                        alignment: Alignment.topRight,
+                                                        child: TextFormField(
+                                                          key: Key(selectedStartTime.toString()),
+                                                          initialValue:
+                                                          selectedStartTime.minute < 10 ? "${selectedStartTime.hour}:0${selectedStartTime.minute}"
+                                                              : "${selectedStartTime.hour}:${selectedStartTime.minute}",
+                                                          decoration: const InputDecoration(
+                                                              border: UnderlineInputBorder()
+                                                          ),
+                                                          onTap: () => setState(() => _selectStartTime()),
+                                                        ),
+                                                      ),
                                                     )
                                                   ],
                                                 ),
@@ -194,6 +216,26 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                                               border: UnderlineInputBorder()
                                                           ),
                                                           onTap: () => setState(() => _selectEndDate()),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const Text('Tijd:'),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 100,
+                                                      child: Align(
+                                                        alignment: Alignment.topRight,
+                                                        child: TextFormField(
+                                                          key: Key(selectedEndTime.toString()),
+                                                          initialValue:
+                                                          selectedEndTime.minute < 10 ? "${selectedEndTime.hour}:0${selectedEndTime.minute}"
+                                                              : "${selectedEndTime.hour}:${selectedEndTime.minute}",
+                                                          decoration: const InputDecoration(
+                                                              border: UnderlineInputBorder()
+                                                          ),
+                                                          onTap: () => setState(() => _selectEndTime()),
                                                         ),
                                                       ),
                                                     )
@@ -247,6 +289,16 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     }
   }
 
+  Future<void> _selectStartTime() async {
+    final TimeOfDay? picked = await showTimePicker(
+        context: context, initialTime: TimeOfDay.now());
+    if (picked != null && picked != selectedStartTime) {
+      setState(() {
+        selectedStartTime = picked;
+      });
+    }
+  }
+
   Future<void> _selectEndDate() async {
     final DateTime? picked = await showDatePicker(
         context: context, firstDate: DateTime.now(), lastDate: DateTime(2101));
@@ -257,7 +309,21 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     }
   }
 
+  Future<void> _selectEndTime() async {
+    final TimeOfDay? picked = await showTimePicker(
+        context: context, initialTime: TimeOfDay.now());
+    if (picked != null && picked != selectedEndTime) {
+      setState(() {
+        selectedEndTime = picked;
+      });
+    }
+  }
+
   _confirmRental(CarModel car, DateTime startDate, DateTime endDate) async {
+    startDate = startDate.copyWith(hour: selectedStartTime.hour,
+        minute: selectedEndTime.minute);
+    endDate = endDate.copyWith(hour: selectedEndTime.hour,
+        minute: selectedEndTime.minute);
     var successfullyRented =
         await _rentalController.rentCar(car, startDate, endDate);
     if (successfullyRented) {
@@ -269,4 +335,5 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     }
     Navigator.of(context).pop();
   }
+
 }
