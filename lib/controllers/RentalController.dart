@@ -4,20 +4,21 @@ import 'package:intl/intl.dart';
 import 'package:mobile_app_development/extensions/HttpResponseExtension.dart';
 import 'package:mobile_app_development/models/CustomerModel.dart';
 import 'package:mobile_app_development/models/RentalModel.dart';
+import 'package:mobile_app_development/services/ApiService.dart';
 import 'package:uuid/uuid.dart';
 
 import '../DependencyInjection.dart';
 import '../models/CarModel.dart';
-import '../services/ApiService.dart';
 import '../services/NotificationService.dart';
 
 class RentalController {
-  final ApiService apiService = DependencyInjection.getIt.get<ApiService>();
+  ApiService apiService = DependencyInjection.getIt.get<ApiService>();
+
   final NotificationService notificationService =
       DependencyInjection.getIt.get<NotificationService>();
 
   Future<List<CarModel?>> getAllCars() async {
-    final response = await apiService.getAllCars();
+    final response = await apiService!.getAllCars();
     if (response.isSuccessful()) {
       final carListJson = json.decode(response.body);
       List<CarModel?> carList = [];
@@ -34,7 +35,7 @@ class RentalController {
   }
 
   Future<CarModel?> getCar(int id) async {
-    final response = await apiService.getCar(id);
+    final response = await apiService!.getCar(id);
 
     if (response.isSuccessful()) {
       final carJson = json.decode(response.body);
@@ -46,7 +47,7 @@ class RentalController {
   }
 
   Future<bool> rentCar(CarModel car, DateTime from, DateTime to) async {
-    var getCustomer = await apiService.getCurrentCustomer();
+    var getCustomer = await apiService!.getCurrentCustomer();
     var customer = CustomerModel.fromJson(json.decode(getCustomer.body));
 
     final formatter = DateFormat("yyyy-MM-dd");
@@ -63,7 +64,7 @@ class RentalController {
       car: car,
     );
 
-    var response = await apiService.rentCar(rental);
+    var response = await apiService!.rentCar(rental);
 
     if (response.isSuccessful()) {
       notificationService.scheduleReturnReminder(to, car);
@@ -74,7 +75,7 @@ class RentalController {
   }
 
   Future<List<RentalModel>> getRentals() async {
-    final response = await apiService.getCurrentCustomer();
+    final response = await apiService!.getCurrentCustomer();
 
     if (response.isSuccessful()) {
       var responseBody = json.decode(response.body);
@@ -94,7 +95,7 @@ class RentalController {
   }
 
   Future<List<RentalModel>> getActiveRentals() async {
-    final response = await apiService.getCurrentCustomer();
+    final response = await apiService!.getCurrentCustomer();
 
     if (response.isSuccessful()) {
       var responseBody = json.decode(response.body);
@@ -117,7 +118,7 @@ class RentalController {
   }
 
   Future<RentalModel?> getRental(int id) async {
-    final response = await apiService.getRental(id);
+    final response = await apiService!.getRental(id);
 
     if (response.isSuccessful()) {
       final rentalJson = json.decode(response.body);
@@ -131,13 +132,13 @@ class RentalController {
   }
 
   Future<bool> removeRental(int rentalId) async {
-    final response = await apiService.removeRental(rentalId);
+    final response = await apiService!.removeRental(rentalId);
 
     return response.isSuccessful();
   }
 
   Future<bool> changeRental(RentalModel rental) async {
-    final response = await apiService.changeRental(rental);
+    final response = await apiService!.changeRental(rental);
 
     return response.isSuccessful();
   }

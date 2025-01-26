@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app_development/controllers/AccountController.dart';
 import 'package:mobile_app_development/models/AccountInfoModel.dart';
+import 'package:mobile_app_development/services/auth/AuthService.dart';
 
 import '../DependencyInjection.dart';
 import '../helpers/FormHelper.dart';
 import '../helpers/RouteHelper.dart';
-import '../services/AuthService.dart';
 import '../widgets/MainBottomNavigation.dart';
 
 class ChangeAccountInfoScreen extends StatefulWidget {

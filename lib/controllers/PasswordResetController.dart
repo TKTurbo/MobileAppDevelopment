@@ -1,7 +1,7 @@
 import 'package:mobile_app_development/extensions/HttpResponseExtension.dart';
+import 'package:mobile_app_development/services/ApiService.dart';
 
 import '../DependencyInjection.dart';
-import '../services/ApiService.dart';
 
 class PasswordResetController {
   final ApiService apiService = DependencyInjection.getIt.get<ApiService>();
