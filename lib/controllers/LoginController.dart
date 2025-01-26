@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:mobile_app_development/extensions/HttpResponseExtension.dart';
 import 'package:mobile_app_development/services/ApiService.dart';
+import 'package:mobile_app_development/services/auth/AuthService.dart';
+
 import '../DependencyInjection.dart';
 import '../models/sendonly/LoginModel.dart';
-import '../services/AuthService.dart';
 
 class LoginController {
   final ApiService apiService = DependencyInjection.getIt.get<ApiService>();

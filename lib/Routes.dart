@@ -10,13 +10,13 @@ import 'package:mobile_app_development/screens/CreateInspectionScreen.dart';
 import 'package:mobile_app_development/screens/static/FaqScreen.dart';
 import 'package:mobile_app_development/screens/RentalDetailScreen.dart';
 import 'package:mobile_app_development/screens/RentalHistoryScreen.dart';
+import 'package:mobile_app_development/services/auth/AuthService.dart';
 import 'package:mobile_app_development/widgets/CarsList.dart';
 import 'package:mobile_app_development/screens/CarDetailScreen.dart';
 import 'package:mobile_app_development/screens/HomeScreen.dart';
 import 'package:mobile_app_development/screens/LoginScreen.dart';
 import 'package:mobile_app_development/screens/RegisterScreen.dart';
 import 'package:mobile_app_development/screens/RentalScreen.dart';
-import 'package:mobile_app_development/services/AuthService.dart';
 import 'DependencyInjection.dart';
 
 final authService = DependencyInjection.getIt.get<AuthService>();

@@ -1,12 +1,13 @@
 import 'package:http/http.dart' as http;
+import 'package:mobile_app_development/DependencyInjection.dart';
+import 'package:mobile_app_development/helpers/CacheHelper.dart';
 import 'package:mobile_app_development/models/AccountInfoModel.dart';
 import 'package:mobile_app_development/models/InspectionModel.dart';
-import 'package:mobile_app_development/services/AuthService.dart';
+import 'package:mobile_app_development/models/RentalModel.dart';
+import 'package:mobile_app_development/models/sendonly/ChangePasswordModel.dart';
+import 'package:mobile_app_development/services/auth/AuthService.dart';
 
-import '../DependencyInjection.dart';
-import '../helpers/CacheHelper.dart';
-import '../models/RentalModel.dart';
-import '../models/sendonly/ChangePasswordModel.dart';
+
 
 class ApiService {
   final _authService = DependencyInjection.getIt.get<AuthService>();

@@ -1,14 +1,23 @@
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mobile_app_development/helpers/DateTimeHelper.dart';
+
+import 'IAuthStorage.dart';
 
 class AuthService {
   static const _tokenKey = 'bearer_token';
-  final _storage = const FlutterSecureStorage();
+  AbstractStorage _storage;
+
+  AuthService(this._storage);
+
+  DateTimeHelper dateTimeHelper = DateTimeHelper();
+
+  void setDateTime(DateTime dateTime) {
+    dateTimeHelper.setDateTime(dateTime);
+  }
 
   Future<String?> getToken() async {
-    var token = await _storage.read(key: _tokenKey);
-
+    var token = await _storage.read(_tokenKey);
     // Remove token when expired. Will probably never happen due to it being more than a year in the future.
     if (isTokenExpired(token)) {
       clearToken();
@@ -19,15 +28,15 @@ class AuthService {
   }
 
   Future<void> saveToken(String token) async {
-    await _storage.write(key: _tokenKey, value: token);
+    await _storage.write(_tokenKey, token);
   }
 
   Future<void> clearToken() async {
-    await _storage.delete(key: _tokenKey);
+    await _storage.delete(_tokenKey);
   }
 
   Future<bool> isLoggedIn() async {
-    var key = await _storage.read(key: _tokenKey);
+    var key = await _storage.read(_tokenKey);
 
     return key != null;
   }
@@ -46,8 +55,7 @@ class AuthService {
 
     final payload = decodeToken(token);
     if (payload == null || payload['exp'] == null) return true;
-
-    final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final now = dateTimeHelper.now().millisecondsSinceEpoch ~/ 1000;
     return now >= payload['exp'];
   }
 }
